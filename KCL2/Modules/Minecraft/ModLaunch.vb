@@ -1272,7 +1272,7 @@ Retry:
         For Each Part As String In SplitJavaArguments(ArgumentText)
             Dim Normalized As String = Part.Trim().ToLowerInvariant()
             If (Normalized.StartsWith("-javaagent:") OrElse Normalized.StartsWith("-agentpath:") OrElse Normalized.StartsWith("-agentlib:")) AndAlso
-               Not Allowed.Any(Function(allowed) Normalized.Contains(allowed)) Then
+               Not Allowed.Any(Function(allowedName) Normalized.Contains(allowedName)) Then
                 Yield "JVM 参数包含未授权代码注入：" & Part
             ElseIf Normalized.StartsWith("-xbootclasspath/a:") OrElse Normalized = "-xverify:none" OrElse Normalized = "-noverify" OrElse
                    Normalized.Contains("-xx:-bytecodeverification") Then
