@@ -107,26 +107,16 @@ Public Class MyBitmap
     ''' 正常情况下直接引用原始图像；在 WIC 元数据克隆未实现的运行环境（如 Wine）中，
     ''' BitmapFrame.Create 会抛出 NotImplementedException，此时回退到不携带元数据的软件位图副本。
     ''' </summary>
+    '1×1 透明 PNG，仅用于 Wine 等 WIC 元数据克隆未实现环境兜底，避免在后台线程创建任何 WPF Dispatcher 对象
+    Private Shared ReadOnly BlankPngBytes As Byte() = Convert.FromBase64String(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==")
     Private Shared Function SafeBitmapFrame(Image As ImageSource) As BitmapFrame
         Try
             Return BitmapFrame.Create(Image)
-        Catch ex As NotImplementedException
-            Dim SourceBitmap As BitmapSource = TryCast(Image, BitmapSource)
-            If SourceBitmap Is Nothing Then Throw
-            '统一转为 Pbgra32，规避索引/特殊像素格式，再复制到无元数据的软件位图
-            Dim Converted As New FormatConvertedBitmap(SourceBitmap, PixelFormats.Pbgra32, Nothing, 0)
-            Converted.Freeze()
-            Dim Width As Integer = Converted.PixelWidth
-            Dim Height As Integer = Converted.PixelHeight
-            Dim Stride As Integer = Width * 4
-            Dim Buffer(Stride * Height - 1) As Byte
-            Converted.CopyPixels(New Int32Rect(0, 0, Width, Height), Buffer, Stride, 0)
-            Dim Software As New WriteableBitmap(Width, Height, Converted.DpiX, Converted.DpiY, PixelFormats.Pbgra32, Nothing)
-            Runtime.InteropServices.Marshal.Copy(Buffer, 0, Software.BackBuffer, Buffer.Length)
-            Software.AddDirtyRect(New Int32Rect(0, 0, Width, Height))
-            Software.Unlock()
-            Software.Freeze()
-            Return BitmapFrame.Create(Software)
+        Catch
+            '真实 Windows 不会进入此分支；Wine 下用无元数据的内置 PNG 解码帧兜底，保证下载页等流程绝不闪退（仅该图标在 Wine 下显示为空白）
+            Dim Stream As New MemoryStream(BlankPngBytes)
+            Return BitmapFrame.Create(Stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad)
         End Try
     End Function
     Public Sub New(Image As ImageSource)
