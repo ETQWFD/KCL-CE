@@ -1,0 +1,89 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'KCL2/**'
+      - 'PCLCS/**'
+      - 'MeloongCore/**'
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - 'KCL2/**'
+      - 'PCLCS/**'
+      - 'MeloongCore/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Windows Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: Prepare Help
+        shell: pwsh
+        run: |
+          git clone https://github.com/Meloong-Git/PCLHelp.git -b master --single-branch --depth 1 PCLHelp
+          if (Test-Path 'PCLHelp') {
+            Compress-Archive -Path 'PCLHelp\*' -DestinationPath 'KCL2\Resources\Help.zip' -Force
+          }
+
+      - name: Inject build metadata
+        shell: bash
+        run: |
+          sed -i 's/Public Const CommitHash As String = ""/Public Const CommitHash As String = "${{ github.sha }}"/' "KCL2/Modules/Base/ModBase.vb"
+
+      - name: Restore PCLCS packages
+        run: dotnet restore PCLCS\PCLCS.csproj
+
+      - name: Build PCLCS
+        run: dotnet build PCLCS\PCLCS.csproj -c Release --no-restore
+
+      - name: Build KCL2
+        env:
+          KCL2_MS_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          KCL2_CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+        run: msbuild "KCL2.sln" /p:Configuration=Release /p:Platform="Any CPU" -m -v:minimal
+
+      - name: Package portable release
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path 'publish\KCL2' | Out-Null
+          Copy-Item -Path 'KCL2\bin\*' -Destination 'publish\KCL2' -Recurse -Force
+          Compress-Archive -Path 'publish\KCL2\*' -DestinationPath 'publish\KCL2-portable.zip' -Force
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KCL2-portable
+          path: publish/KCL2-portable.zip
+
+      - name: Publish continuous release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = 'continuous'
+          gh release delete $tag --yes --repo $env:GITHUB_REPOSITORY 2>$null
+          gh release create $tag `
+            --target $env:GITHUB_SHA `
+            --title 'KCL2 Continuous Build' `
+            --notes '自动构建的最新 Windows 便携版。如遇问题，请在 Issues 附上 kcl 日志。' `
+            publish/KCL2-portable.zip
