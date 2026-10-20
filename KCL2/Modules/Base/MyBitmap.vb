@@ -102,30 +102,22 @@ Public Class MyBitmap
             End If
         End Try
     End Sub
-    ''' <summary>
-    ''' 创建可用于编码器的 BitmapFrame。
-    ''' 正常情况下直接引用原始图像；在 WIC 元数据克隆未实现的运行环境（如 Wine）中，
-    ''' BitmapFrame.Create 会抛出 NotImplementedException，此时回退到不携带元数据的软件位图副本。
-    ''' </summary>
-    '1×1 透明 PNG，仅用于 Wine 等 WIC 元数据克隆未实现环境兜底，避免在后台线程创建任何 WPF Dispatcher 对象
-    Private Shared ReadOnly BlankPngBytes As Byte() = Convert.FromBase64String(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==")
-    Private Shared Function SafeBitmapFrame(Image As ImageSource) As BitmapFrame
-        Try
-            Return BitmapFrame.Create(Image)
-        Catch
-            '真实 Windows 不会进入此分支；Wine 下用无元数据的内置 PNG 解码帧兜底，保证下载页等流程绝不闪退（仅该图标在 Wine 下显示为空白）
-            Dim Stream As New MemoryStream(BlankPngBytes)
-            Return BitmapFrame.Create(Stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad)
-        End Try
+    'Wine 等环境的 WIC 组件不完整（PNG 元数据克隆/解码可能抛 NotImplementedException 或 0x88982F07），
+    '此时绝不能让异常冒泡到全局处理器导致 FailFast；改用纯 GDI+ 占位位图。真实 Windows 的 WIC 完整，不会进入兜底。
+    Private Shared Function FallbackBitmap() As System.Drawing.Bitmap
+        Return New System.Drawing.Bitmap(16, 16)
     End Function
     Public Sub New(Image As ImageSource)
-        Using MS = New MemoryStream()
-            Dim Encoder = New PngBitmapEncoder()
-            Encoder.Frames.Add(SafeBitmapFrame(Image))
-            Encoder.Save(MS)
-            Pic = New System.Drawing.Bitmap(MS)
-        End Using
+        Try
+            Using MS = New MemoryStream()
+                Dim Encoder = New PngBitmapEncoder()
+                Encoder.Frames.Add(BitmapFrame.Create(Image))
+                Encoder.Save(MS)
+                Pic = New System.Drawing.Bitmap(MS)
+            End Using
+        Catch
+            Pic = FallbackBitmap()
+        End Try
     End Sub
     Public Sub New(Image As System.Drawing.Image)
         Pic = Image
@@ -134,12 +126,16 @@ Public Class MyBitmap
         Pic = Image
     End Sub
     Public Sub New(Image As ImageBrush)
-        Using MS = New MemoryStream()
-            Dim Encoder = New BmpBitmapEncoder()
-            Encoder.Frames.Add(SafeBitmapFrame(Image.ImageSource))
-            Encoder.Save(MS)
-            Pic = New System.Drawing.Bitmap(MS)
-        End Using
+        Try
+            Using MS = New MemoryStream()
+                Dim Encoder = New BmpBitmapEncoder()
+                Encoder.Frames.Add(BitmapFrame.Create(Image.ImageSource))
+                Encoder.Save(MS)
+                Pic = New System.Drawing.Bitmap(MS)
+            End Using
+        Catch
+            Pic = FallbackBitmap()
+        End Try
     End Sub
     Private Class WebPDecoder '将代码隔离在另外一个类中，这样只要不调用这个方法就不会加载 Imazen.WebP.dll
         Public Shared Function DecodeFromBytes(Bytes As Byte()) As System.Drawing.Bitmap
