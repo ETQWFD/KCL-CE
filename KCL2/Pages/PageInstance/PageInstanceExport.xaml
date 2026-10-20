@@ -1,7 +1,7 @@
 <local:MyPageRight
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="clr-namespace:KCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
     mc:Ignorable="d" x:Class="PageInstanceExport"
     PanScroll="PanBack">
@@ -259,7 +259,7 @@
                                 DefaultChecked="True" />
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
-                        <local:MyCheckBox x:Name="CheckOptionsPcl">
+                        <local:MyCheckBox x:Name="CheckOptionsKcl">
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption 
                                 Title="KCL2 启动器程序"
@@ -268,8 +268,8 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0"
-                                Visibility="{Binding Checked, ElementName=CheckOptionsPcl, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <local:MyCheckBox x:Name="CheckOptionsPclCustom">
+                                Visibility="{Binding Checked, ElementName=CheckOptionsKcl, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <local:MyCheckBox x:Name="CheckOptionsKclCustom">
                                 <local:MyCheckBox.Tag>
                                     <local:ExportOption 
                                 Title="KCL2 个性化内容"

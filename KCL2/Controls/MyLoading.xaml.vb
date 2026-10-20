@@ -1,4 +1,4 @@
-Imports KCL2.MyLoading
+Imports KCL.MyLoading
 
 Public Class MyLoading
 

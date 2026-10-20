@@ -2,7 +2,7 @@ Imports System.Collections.ObjectModel
 Imports System.Globalization
 Imports System.Net.Sockets
 Imports System.Reflection
-Imports KCL2
+Imports KCL
 
 Public Class PageLinkMain
     Private Const INVITE_CODE_VERSION As Integer = 2

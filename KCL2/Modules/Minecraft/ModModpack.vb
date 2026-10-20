@@ -134,8 +134,8 @@ Public Module ModModpack
             Logger.Info($"整合包中没有覆写文件夹：{OverridesFolder}")
         End If
         '设置 ini
-        Dim OverridesIni As String = $"{OverridesFolder}PCL\Setup.ini"
-        Dim VersionIni As String = $"{VersionFolder}PCL\Setup.ini"
+        Dim OverridesIni As String = $"{OverridesFolder}KCL\Setup.ini"
+        Dim VersionIni As String = $"{VersionFolder}KCL\Setup.ini"
         If FileUtils.Exists(OverridesIni) Then
             WriteIni(OverridesIni, "VersionArgumentIndie", 1) '开启版本隔离
             WriteIni(OverridesIni, "VersionArgumentIndieV2", True)
@@ -323,9 +323,9 @@ Public Module ModModpack
         Sub(Task As LoaderTask(Of String, String))
             '设置图标
             If Logo IsNot Nothing AndAlso FileUtils.Exists(Logo) Then
-                FileUtils.Copy(Logo, VersionFolder & "PCL\Logo.png")
-                WriteIni(VersionFolder & "PCL\Setup.ini", "Logo", "PCL\Logo.png")
-                WriteIni(VersionFolder & "PCL\Setup.ini", "LogoCustom", "True")
+                FileUtils.Copy(Logo, VersionFolder & "KCL\Logo.png")
+                WriteIni(VersionFolder & "KCL\Setup.ini", "Logo", "KCL\Logo.png")
+                WriteIni(VersionFolder & "KCL\Setup.ini", "LogoCustom", "True")
                 Logger.Info($"已设置整合包 Logo：{Logo}")
             End If
             '解压地图文件
@@ -457,9 +457,9 @@ Public Module ModModpack
         Sub(Task As LoaderTask(Of String, String))
             '设置图标
             If Logo IsNot Nothing AndAlso FileUtils.Exists(Logo) Then
-                FileUtils.Copy(Logo, VersionFolder & "PCL\Logo.png")
-                WriteIni(VersionFolder & "PCL\Setup.ini", "Logo", "PCL\Logo.png")
-                WriteIni(VersionFolder & "PCL\Setup.ini", "LogoCustom", "True")
+                FileUtils.Copy(Logo, VersionFolder & "KCL\Logo.png")
+                WriteIni(VersionFolder & "KCL\Setup.ini", "Logo", "KCL\Logo.png")
+                WriteIni(VersionFolder & "KCL\Setup.ini", "LogoCustom", "True")
                 Logger.Info($"已设置整合包 Logo：{Logo}")
             End If
             '删除原始整合包文件
@@ -558,7 +558,7 @@ Public Module ModModpack
         Dim VersionFolder As String = Path.Combine(McFolderSelected, "versions", InstanceName) & "\"
         '解压
         Dim InstallTemp As String = RequestTaskTempFolder()
-        Dim SetupFile As String = VersionFolder & "PCL\Setup.ini"
+        Dim SetupFile As String = VersionFolder & "KCL\Setup.ini"
         Dim InstallLoaders As New List(Of LoaderBase)
         InstallLoaders.Add(New LoaderTask(Of String, Integer)("解压整合包文件",
         Sub(Task As LoaderTask(Of String, Integer))
@@ -603,8 +603,8 @@ Public Module ModModpack
                     Dim Logo As String = ReadIni(MmcSetupFile, "iconKey", "")
                     If Logo <> "" AndAlso FileUtils.Exists($"{InstallTemp}{ArchiveBaseFolder}{Logo}.png") Then
                         WriteIni(SetupFile, "LogoCustom", True)
-                        WriteIni(SetupFile, "Logo", "PCL\Logo.png")
-                        FileUtils.Copy($"{InstallTemp}{ArchiveBaseFolder}{Logo}.png", VersionFolder & "PCL\Logo.png")
+                        WriteIni(SetupFile, "Logo", "KCL\Logo.png")
+                        FileUtils.Copy($"{InstallTemp}{ArchiveBaseFolder}{Logo}.png", VersionFolder & "KCL\Logo.png")
                         Logger.Info($"迁移 MultiMC 版本独立设置：版本图标（{Logo}.png）")
                     End If
                     'JVM 参数
@@ -695,7 +695,7 @@ Public Module ModModpack
         Dim VersionFolder As String = Path.Combine(McFolderSelected, "versions", InstanceName) & "\"
         '解压
         Dim InstallTemp As String = RequestTaskTempFolder()
-        Dim SetupFile As String = VersionFolder & "PCL\Setup.ini"
+        Dim SetupFile As String = VersionFolder & "KCL\Setup.ini"
         Dim InstallLoaders As New List(Of LoaderBase)
         InstallLoaders.Add(New LoaderTask(Of String, Integer)("解压整合包文件",
         Sub(Task As LoaderTask(Of String, Integer))

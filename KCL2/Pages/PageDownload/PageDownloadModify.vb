@@ -300,8 +300,8 @@ Public Class PageDownloadModify
         '还原原版信息
         OriginalName = Task.Input.Name
         CustomLogo = Nothing
-        If ReadIni(Task.Input.PathVersion & "PCL\Setup.ini", "LogoCustom", False) Then
-            CustomLogo = If(Task.Input.Logo.EndsWithF("PCL\Logo.png"), Task.Input.PathVersion & "PCL\Logo.png", Task.Input.Logo)
+        If ReadIni(Task.Input.PathVersion & "KCL\Setup.ini", "LogoCustom", False) Then
+            CustomLogo = If(Task.Input.Logo.EndsWithF("KCL\Logo.png"), Task.Input.PathVersion & "KCL\Logo.png", Task.Input.Logo)
         End If
         Dim Item = McDownloadListItem(VanillaData, Nothing, False).Init()
         VanillaName = Item.Title

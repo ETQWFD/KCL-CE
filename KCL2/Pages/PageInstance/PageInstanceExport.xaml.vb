@@ -334,10 +334,10 @@ Public Class PageInstanceExport
             ConfigLines.Add("IncludeJava:" & CheckOptionsJava.Checked)
             ConfigLines.Add("")
             ConfigLines.Add("# 是否打包正式版 KCL2，以便没有启动器的玩家安装整合包。")
-            ConfigLines.Add("IncludeLauncher:" & CheckOptionsPcl.Checked)
+            ConfigLines.Add("IncludeLauncher:" & CheckOptionsKcl.Checked)
             ConfigLines.Add("")
             ConfigLines.Add("# 是否打包 KCL2 个性化内容，例如功能隐藏设置、主页、背景音乐和图片等。")
-            ConfigLines.Add("IncludeLauncherCustom:" & CheckOptionsPclCustom.Checked)
+            ConfigLines.Add("IncludeLauncherCustom:" & CheckOptionsKclCustom.Checked)
             ConfigLines.Add("")
             ConfigLines.Add("# 是否将 Mod、资源包、光影包的文件直接放入整合包中，这样在导入时就无需联网下载它们。")
             ConfigLines.Add("# 建议仅在无法稳定连接 CurseForge 或 Modrinth 时才考虑启用。")
@@ -386,8 +386,8 @@ Public Class PageInstanceExport
             TextExportName.Text = Ini.GetOrDefault("Name", "")
             TextExportVersion.Text = Ini.GetOrDefault("Version", "")
             CheckOptionsJava.Checked = Ini.GetOrDefault("IncludeJava", True)
-            CheckOptionsPcl.Checked = Ini.GetOrDefault("IncludeLauncher", True)
-            CheckOptionsPclCustom.Checked = Ini.GetOrDefault("IncludeLauncherCustom", True)
+            CheckOptionsKcl.Checked = Ini.GetOrDefault("IncludeLauncher", True)
+            CheckOptionsKclCustom.Checked = Ini.GetOrDefault("IncludeLauncherCustom", True)
             CheckAdvancedInclude.Checked = Ini.GetOrDefault("DontCheckHostedAssets", False)
             If Not CheckAdvancedInclude.Checked Then CheckAdvancedModrinth.Checked = Ini.GetOrDefault("ModrinthUploadMode", False) '#7979，加个特判
             ConfigPackPath = Ini.GetOrDefault("PackPath", Nothing)
@@ -445,9 +445,9 @@ Public Class PageInstanceExport
         End If
         If PackPath Is Nothing Then
             Dim Extensions As New List(Of (Extension As String, Display As String))
-            If Not CheckOptionsPcl.Checked AndAlso CheckAdvancedModrinth.Checked Then Extensions.Add(("mrpack", "Modrinth 整合包文件"))
+            If Not CheckOptionsKcl.Checked AndAlso CheckAdvancedModrinth.Checked Then Extensions.Add(("mrpack", "Modrinth 整合包文件"))
             Extensions.Add(("zip", "压缩文件"))
-            If Not CheckOptionsPcl.Checked AndAlso Not CheckAdvancedModrinth.Checked Then Extensions.Add(("mrpack", "Modrinth 整合包文件"))
+            If Not CheckOptionsKcl.Checked AndAlso Not CheckAdvancedModrinth.Checked Then Extensions.Add(("mrpack", "Modrinth 整合包文件"))
             PackPath = Dialogs.SaveFile("选择导出位置",
                 PackName & If(String.IsNullOrEmpty(TextExportVersion.Text), "", " " & TextExportVersion.Text), filter:=Extensions)
             Logger.Info($"手动指定的导出路径：{PackPath}")
@@ -464,8 +464,8 @@ Public Class PageInstanceExport
         Dim PathIndie As String = TargetInstance.PathIndie
         Dim CheckHostedAssets As Boolean = Not CheckAdvancedInclude.Checked
         Dim ModrinthUploadMode As Boolean = CheckAdvancedModrinth.Checked
-        Dim IncludePCL As Boolean = CheckOptionsPcl.Checked
-        Dim IncludePCLCustom As Boolean = IncludePCL AndAlso CheckOptionsPclCustom.Checked
+        Dim IncludeKcl As Boolean = CheckOptionsKcl.Checked
+        Dim IncludeKclCustom As Boolean = IncludeKcl AndAlso CheckOptionsKclCustom.Checked
         Dim AllRules = StandardizeLines(GetAllRules(), True).ToList()
         Dim AllExtraFiles = StandardizeLines(GetExtraFileLines(), False).ToList()
         Logger.Info($"准备导出整合包，共有 {AllRules.Count} 条规则，{AllExtraFiles.Count} 条追加内容行")
@@ -475,7 +475,7 @@ Public Class PageInstanceExport
 
 #Region "准备 KCL2 文件"
 
-        If BuildType <> BuildTypes.Release AndAlso IncludePCL Then
+        If BuildType <> BuildTypes.Release AndAlso IncludeKcl Then
             Loaders.Add(New LoaderTask(Of Integer, Integer)("下载 KCL2 正式版",
             Sub(Loader As LoaderTask(Of Integer, Integer))
                 DownloadLatestKCL2(Loader)
@@ -545,7 +545,7 @@ Public Class PageInstanceExport
             End If
             Loader.Progress = 0.95
             '复制追加内容到根目录
-            Dim BaseFolder As String = If(IncludePCL, CacheFolder, CacheFolder & "modpack\")
+            Dim BaseFolder As String = If(IncludeKcl, CacheFolder, CacheFolder & "modpack\")
             For Each Line In AllExtraFiles
                 If Line.EndsWithF("\") OrElse Line.EndsWithF("/") Then
                     If DirectoryUtils.Exists(Line) Then
@@ -563,19 +563,19 @@ Public Class PageInstanceExport
             Next
             Loader.Progress = 0.97
             '复制 KCL2 版本设置
-            If DirectoryUtils.Exists(TargetInstance.PathVersion & "PCL\") Then DirectoryUtils.Copy(TargetInstance.PathVersion & "PCL\", OverridesFolder & "PCL\")
-            WriteIni(OverridesFolder & "PCL\Setup.ini", "IsStar", False)
+            If DirectoryUtils.Exists(TargetInstance.PathVersion & "KCL\") Then DirectoryUtils.Copy(TargetInstance.PathVersion & "KCL\", OverridesFolder & "KCL\")
+            WriteIni(OverridesFolder & "KCL\Setup.ini", "IsStar", False)
             '复制 KCL2 本体（正式版）
-            If BuildType = BuildTypes.Release AndAlso IncludePCL Then FileUtils.Copy(PathExe, CacheFolder & "KCL2.exe")
+            If BuildType = BuildTypes.Release AndAlso IncludeKcl Then FileUtils.Copy(PathExe, CacheFolder & "KCL2.exe")
             '复制 KCL2 个性化内容
-            If IncludePCLCustom Then
-                If DirectoryUtils.Exists(Paths.Base & "KCL\Pictures\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Pictures\", CacheFolder & "PCL\Pictures\")
-                If DirectoryUtils.Exists(Paths.Base & "KCL\Musics\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Musics\", CacheFolder & "PCL\Musics\")
-                If DirectoryUtils.Exists(Paths.Base & "KCL\Help\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Help\", CacheFolder & "PCL\Help\")
-                If FileUtils.Exists(Paths.Base & "KCL\Custom.xaml") Then FileUtils.Copy(Paths.Base & "KCL\Custom.xaml", CacheFolder & "PCL\Custom.xaml")
-                If FileUtils.Exists(Paths.Base & "KCL\Setup.ini") Then FileUtils.Copy(Paths.Base & "KCL\Setup.ini", CacheFolder & "PCL\Setup.ini")
-                If FileUtils.Exists(Paths.Base & "KCL\hints.txt") Then FileUtils.Copy(Paths.Base & "KCL\hints.txt", CacheFolder & "PCL\hints.txt")
-                If FileUtils.Exists(Paths.Base & "KCL\Logo.png") Then FileUtils.Copy(Paths.Base & "KCL\Logo.png", CacheFolder & "PCL\Logo.png")
+            If IncludeKclCustom Then
+                If DirectoryUtils.Exists(Paths.Base & "KCL\Pictures\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Pictures\", CacheFolder & "KCL\Pictures\")
+                If DirectoryUtils.Exists(Paths.Base & "KCL\Musics\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Musics\", CacheFolder & "KCL\Musics\")
+                If DirectoryUtils.Exists(Paths.Base & "KCL\Help\") Then DirectoryUtils.Copy(Paths.Base & "KCL\Help\", CacheFolder & "KCL\Help\")
+                If FileUtils.Exists(Paths.Base & "KCL\Custom.xaml") Then FileUtils.Copy(Paths.Base & "KCL\Custom.xaml", CacheFolder & "KCL\Custom.xaml")
+                If FileUtils.Exists(Paths.Base & "KCL\Setup.ini") Then FileUtils.Copy(Paths.Base & "KCL\Setup.ini", CacheFolder & "KCL\Setup.ini")
+                If FileUtils.Exists(Paths.Base & "KCL\hints.txt") Then FileUtils.Copy(Paths.Base & "KCL\hints.txt", CacheFolder & "KCL\hints.txt")
+                If FileUtils.Exists(Paths.Base & "KCL\Logo.png") Then FileUtils.Copy(Paths.Base & "KCL\Logo.png", CacheFolder & "KCL\Logo.png")
             End If
         End Sub) With {.ProgressWeight = 5})
 
@@ -701,7 +701,7 @@ Public Class PageInstanceExport
             }
             FileUtils.Write(CacheFolder & "modpack\modrinth.index.json", ResultJson.ToString(Newtonsoft.Json.Formatting.Indented))
             '打包
-            If IncludePCL Then
+            If IncludeKcl Then
                 '首次压缩整合包
                 FileUtils.CreateZipFromDirectory(CacheFolder & "modpack.mrpack", CacheFolder & "modpack\")
                 Loader.Progress = 0.5
@@ -777,8 +777,8 @@ Public Class PageInstanceExport
         If CheckAdvancedInclude.Checked Then CheckAdvancedModrinth.Checked = False
         CheckAdvancedModrinth.IsEnabled = Not CheckAdvancedInclude.Checked
     End Sub
-    Private Sub CheckAdvancedModrinth_Change(sender As Object, user As Boolean) Handles CheckAdvancedModrinth.Change, CheckOptionsPcl.Change
-        HintModrinthFormat.Visibility = (CheckAdvancedModrinth.Checked AndAlso CheckOptionsPcl.Checked).ToVisibility
+    Private Sub CheckAdvancedModrinth_Change(sender As Object, user As Boolean) Handles CheckAdvancedModrinth.Change, CheckOptionsKcl.Change
+        HintModrinthFormat.Visibility = (CheckAdvancedModrinth.Checked AndAlso CheckOptionsKcl.Checked).ToVisibility
     End Sub
 
 End Class

@@ -2,7 +2,7 @@
 
 #Region "附加属性"
 
-Imports KCL2.FormMain
+Imports KCL.FormMain
 
 ''' <summary>
 ''' 用于在 XAML 中初始化列表对象。

@@ -268,7 +268,7 @@ Public Class Settings
                     End Try
                 Case Sources.Instance
                     If Instance Is Nothing Then Throw New Exception($"保存版本独立设置 {Key} 时未提供目标版本")
-                    WriteIni(Instance.PathVersion & "PCL\Setup.ini", Key, Value)
+                    WriteIni(Instance.PathVersion & "KCL\Setup.ini", Key, Value)
             End Select
         End Sub
 
@@ -336,7 +336,7 @@ Public Class Settings
                     If Instance Is Nothing Then
                         Throw New Exception($"读取版本设置 {Key} 时未提供目标版本")
                     Else
-                        GotValue = ReadIni(Instance.PathVersion & "PCL\Setup.ini", Key, DefaultValue)
+                        GotValue = ReadIni(Instance.PathVersion & "KCL\Setup.ini", Key, DefaultValue)
                     End If
             End Select
             If Entry.Encrypted Then
@@ -397,7 +397,7 @@ Public Class Settings
                     End Try
                 Case Sources.Instance
                     If Instance Is Nothing Then Throw New Exception($"重置版本设置 {Key} 时未提供目标版本")
-                    DeleteIniKey(Instance.PathVersion & "PCL\Setup.ini", Key)
+                    DeleteIniKey(Instance.PathVersion & "KCL\Setup.ini", Key)
             End Select
             '触发改变事件
             If Entry.OnChanged IsNot Nothing Then Entry.OnChanged.Invoke(Entry.DefaultValue)
@@ -430,7 +430,7 @@ Public Class Settings
                 End Try
             Case Else 'Source.Instance
                 If Instance Is Nothing Then Throw New Exception($"判断版本设置 {Key} 是否存在时未提供目标版本")
-                Return HasIniKey(Instance.PathVersion & "PCL\Setup.ini", Key)
+                Return HasIniKey(Instance.PathVersion & "KCL\Setup.ini", Key)
         End Select
     End Function
 

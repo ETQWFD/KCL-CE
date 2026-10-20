@@ -558,7 +558,7 @@ Recheck:
         Public Config As JsonConfigProvider
         Public Sub ResetSettingsCache()
             IniClearCache(PathIndie & "options.txt")
-            IniClearCache(PathVersion & "PCL\Setup.ini")
+            IniClearCache(PathVersion & "KCL\Setup.ini")
             Config.DiscardCache()
             For Each Entry In Settings.Entries.Values
                 If Entry.Source = Settings.Sources.Instance Then Entry.ValueCache.Remove(PathVersion)
@@ -571,7 +571,7 @@ Recheck:
         Public Sub New(NameOrFullPath As String)
             NameOrFullPath = PathUtils.RemoveExtendedPrefix(NameOrFullPath)
             PathVersion = PathUtils.AddSlashSuffix(If(NameOrFullPath.Contains(":"), "", McFolderSelected & "versions\") & NameOrFullPath)
-            Config = New JsonConfigProvider(Path.Combine(PathVersion, "PCL\config.json"))
+            Config = New JsonConfigProvider(Path.Combine(PathVersion, "KCL\config.json"))
         End Sub
 
         ''' <summary>
@@ -664,8 +664,8 @@ Recheck:
 #End Region
 ExitDataLoad:
                 '确定版本图标
-                Logo = ReadIni(PathVersion & "PCL\Setup.ini", "Logo", "")
-                If Logo = "" OrElse Not CType(ReadIni(PathVersion & "PCL\Setup.ini", "LogoCustom", False), Boolean) Then
+                Logo = ReadIni(PathVersion & "KCL\Setup.ini", "Logo", "")
+                If Logo = "" OrElse Not CType(ReadIni(PathVersion & "KCL\Setup.ini", "LogoCustom", False), Boolean) Then
                     Select Case State
                         Case McInstanceState.Original
                             Logo = PathImage & "Blocks/Grass.png"
@@ -692,24 +692,24 @@ ExitDataLoad:
                 '确定版本描述
                 RefreshInfo()
                 '确定版本收藏状态
-                IsStar = ReadIni(PathVersion & "PCL\Setup.ini", "IsStar", False)
+                IsStar = ReadIni(PathVersion & "KCL\Setup.ini", "IsStar", False)
                 '确定版本显示种类
-                DisplayType = ReadIni(PathVersion & "PCL\Setup.ini", "DisplayType", McInstanceCardType.Auto)
+                DisplayType = ReadIni(PathVersion & "KCL\Setup.ini", "DisplayType", McInstanceCardType.Auto)
                 '写入缓存
                 If DirectoryUtils.Exists(PathVersion) Then
-                    WriteIni(PathVersion & "PCL\Setup.ini", "State", State)
-                    WriteIni(PathVersion & "PCL\Setup.ini", "Info", Info)
-                    WriteIni(PathVersion & "PCL\Setup.ini", "Logo", Logo)
+                    WriteIni(PathVersion & "KCL\Setup.ini", "State", State)
+                    WriteIni(PathVersion & "KCL\Setup.ini", "Info", Info)
+                    WriteIni(PathVersion & "KCL\Setup.ini", "Logo", Logo)
                 End If
                 If State <> McInstanceState.Error AndAlso Version.Reliable Then
-                    WriteIni(PathVersion & "PCL\Setup.ini", "ReleaseTime", ReleaseTime.ToString("yyyy'-'MM'-'dd HH':'mm"))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionFabric", If(Version.ModLoaders.HasFlagF(ModLoaders.Fabric), Version.ModLoaderVersions(ModLoaders.Fabric), Nothing))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionOptiFine", If(Version.OptiFineAsMod, Nothing, Version.OptiFine))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionLiteLoader", Version.ModLoaders.HasFlagF(ModLoaders.LiteLoader))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionForge", If(Version.ModLoaders.HasFlagF(ModLoaders.Forge), Version.ModLoaderVersions(ModLoaders.Forge), Nothing))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionNeoForge", If(Version.ModLoaders.HasFlagF(ModLoaders.NeoForge), Version.ModLoaderVersions(ModLoaders.NeoForge), Nothing))
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionVanillaName", Version.VanillaName)
-                    WriteIni(PathVersion & "PCL\Setup.ini", "VersionVanilla", Version.Vanilla.ToString)
+                    WriteIni(PathVersion & "KCL\Setup.ini", "ReleaseTime", ReleaseTime.ToString("yyyy'-'MM'-'dd HH':'mm"))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionFabric", If(Version.ModLoaders.HasFlagF(ModLoaders.Fabric), Version.ModLoaderVersions(ModLoaders.Fabric), Nothing))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionOptiFine", If(Version.OptiFineAsMod, Nothing, Version.OptiFine))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionLiteLoader", Version.ModLoaders.HasFlagF(ModLoaders.LiteLoader))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionForge", If(Version.ModLoaders.HasFlagF(ModLoaders.Forge), Version.ModLoaderVersions(ModLoaders.Forge), Nothing))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionNeoForge", If(Version.ModLoaders.HasFlagF(ModLoaders.NeoForge), Version.ModLoaderVersions(ModLoaders.NeoForge), Nothing))
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionVanillaName", Version.VanillaName)
+                    WriteIni(PathVersion & "KCL\Setup.ini", "VersionVanilla", Version.Vanilla.ToString)
                 End If
             Catch ex As Exception
                 Info = ex.GetDisplay(False)
@@ -726,7 +726,7 @@ ExitDataLoad:
         ''' 根据当前组件信息刷新版本描述。
         ''' </summary>
         Public Sub RefreshInfo()
-            Dim CustomInfo As String = ReadIni(PathVersion & "PCL\Setup.ini", "CustomInfo")
+            Dim CustomInfo As String = ReadIni(PathVersion & "KCL\Setup.ini", "CustomInfo")
             If CustomInfo <> "" Then
                 Info = CustomInfo
             Else
@@ -790,13 +790,13 @@ ExitDataLoad:
                 '标题
                 NewItem.Inlines.Clear()
                 NewItem.Inlines.Add(New Run(Name))
-                If ReadIni(PathVersion & "PCL\Setup.ini", "CustomInfo") <> "" Then '如果版本设置了自定义描述，在标题后面以淡灰色显示其版本号
+                If ReadIni(PathVersion & "KCL\Setup.ini", "CustomInfo") <> "" Then '如果版本设置了自定义描述，在标题后面以淡灰色显示其版本号
                     NewItem.Inlines.Add(New Run("  |  " & VersionDisplayName()) With {.Foreground = New MyColor(215, 215, 215), .FontSize = 12})
                 End If
                 'Logo
                 Try
-                    If Logo.EndsWithF("PCL\Logo.png") Then
-                        NewItem.Logo = PathVersion & "PCL\Logo.png" '修复老版本中，存储的自定义 Logo 使用完整路径，导致移动后无法加载的 Bug
+                    If Logo.EndsWithF("KCL\Logo.png") Then
+                        NewItem.Logo = PathVersion & "KCL\Logo.png" '修复老版本中，存储的自定义 Logo 使用完整路径，导致移动后无法加载的 Bug
                     Else
                         NewItem.Logo = Logo
                     End If
@@ -834,8 +834,8 @@ ExitDataLoad:
             If DirectoryUtils.Exists($"{NewPath}{OldName}-natives") Then DirectoryUtils.Move($"{NewPath}{OldName}-natives", $"{NewPath}{NewName}-natives")
             If FileUtils.Exists($"{NewPath}{OldName}.jar") Then FileUtils.Move($"{NewPath}{OldName}.jar", $"{NewPath}{NewName}.jar")
             '替换版本设置文件中的路径
-            If FileUtils.Exists(NewPath & "PCL\Setup.ini") Then
-                FileUtils.Write(NewPath & "PCL\Setup.ini", FileUtils.ReadAsString(NewPath & "PCL\Setup.ini").Replace(OldPath, NewPath))
+            If FileUtils.Exists(NewPath & "KCL\Setup.ini") Then
+                FileUtils.Write(NewPath & "KCL\Setup.ini", FileUtils.ReadAsString(NewPath & "KCL\Setup.ini").Replace(OldPath, NewPath))
             End If
             '更改已选中的版本
             If ReadIni(McFolderSelected & "kcl.ini", "Version") = OldName Then WriteIni(McFolderSelected & "kcl.ini", "Version", NewName)
@@ -1054,12 +1054,12 @@ OnLoaded:
                         '读取单个版本
                         Dim Instance As New McInstance(FolderVersions)
                         InstanceList.Add(Instance)
-                        Instance.Info = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "CustomInfo", "")
-                        If Instance.Info = "" Then Instance.Info = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "Info", Instance.Info)
-                        Instance.Logo = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "Logo", Instance.Logo)
-                        Instance.State = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "State", Instance.State)
-                        Instance.IsStar = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "IsStar", False)
-                        Instance.DisplayType = ReadIni(Folder & "PCL\Setup.ini", "DisplayType", McInstanceCardType.Auto)
+                        Instance.Info = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "CustomInfo", "")
+                        If Instance.Info = "" Then Instance.Info = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "Info", Instance.Info)
+                        Instance.Logo = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "Logo", Instance.Logo)
+                        Instance.State = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "State", Instance.State)
+                        Instance.IsStar = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "IsStar", False)
+                        Instance.DisplayType = ReadIni(Folder & "KCL\Setup.ini", "DisplayType", McInstanceCardType.Auto)
                         Dim Manifest As McInstallManifest = If(Instance.State = McInstance.McInstanceState.Error, Nothing, Configs.McInstallManifest.Get(Instance.Config))
                         '检查 manifest 是否有过期文件，并进行更新
                         If Manifest IsNot Nothing AndAlso Manifest.SchemaVersion <= Versions.McInstallManifestVersion AndAlso Manifest.ManagedFiles.Any(Function(File) File.Component IsNot Nothing) Then
@@ -1070,7 +1070,7 @@ OnLoaded:
                                 Instance.Config.Save()
                             End If
                         End If
-                        Dim CachedVanillaName = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "VersionVanillaName", "Unknown")
+                        Dim CachedVanillaName = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "VersionVanillaName", "Unknown")
                         If Instance.State <> McInstance.McInstanceState.Error AndAlso (Manifest IsNot Nothing OrElse CachedVanillaName <> "Unknown") Then
                             Dim Version As McVersion
                             If Manifest IsNot Nothing Then
@@ -1081,7 +1081,7 @@ OnLoaded:
                                 '从 Setup.ini 中读取版本信息
                                 Dim ReadCachedInfo =
                                 Function(Key As String) As String
-                                    Dim Value = ReadIni(Instance.PathVersion & "PCL\Setup.ini", Key, Nothing)
+                                    Dim Value = ReadIni(Instance.PathVersion & "KCL\Setup.ini", Key, Nothing)
                                     Return If(Value = "", Nothing, Value) '对老版本 Setup.ini 的空值兼容
                                 End Function
                                 Version = New McVersion(CachedVanillaName) With {.OptiFine = ReadCachedInfo("VersionOptiFine")}
@@ -1089,9 +1089,9 @@ OnLoaded:
                                     Dim CachedVersion = ReadCachedInfo($"Version{Loader}")
                                     If CachedVersion IsNot Nothing Then Version.ModLoaderVersions(Loader) = CachedVersion
                                 Next
-                                If ReadIni(Instance.PathVersion & "PCL\Setup.ini", "VersionLiteLoader", False) Then Version.ModLoaderVersions(ModLoaders.LiteLoader) = "未知版本"
+                                If ReadIni(Instance.PathVersion & "KCL\Setup.ini", "VersionLiteLoader", False) Then Version.ModLoaderVersions(ModLoaders.LiteLoader) = "未知版本"
                             End If
-                            Version.ReleaseTime = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "ReleaseTime", New Date(1970, 1, 1, 15, 0, 0))
+                            Version.ReleaseTime = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "ReleaseTime", New Date(1970, 1, 1, 15, 0, 0))
                             Version.IsFool = Version.IsFool OrElse Instance.State = McInstance.McInstanceState.Fool
                             Version.IsSnapshot = Version.IsSnapshot OrElse Instance.State = McInstance.McInstanceState.Snapshot OrElse Instance.Name.ContainsIgnoreCase("combat")
                             Instance.Version = Version
@@ -1107,7 +1107,7 @@ OnLoaded:
                             Instance.State = McInstance.McInstanceState.Original
                             Instance.Check()
                             '校验错误原因是否改变
-                            Dim CustomInfo As String = ReadIni(Instance.PathVersion & "PCL\Setup.ini", "CustomInfo")
+                            Dim CustomInfo As String = ReadIni(Instance.PathVersion & "KCL\Setup.ini", "CustomInfo")
                             If Instance.State = McInstance.McInstanceState.Original OrElse (CustomInfo = "" AndAlso Not OldDesc = Instance.Info) Then
                                 Logger.Info($"版本 {Instance.Name} 的错误状态已变更，新的状态为：{Instance.Info}")
                                 Return Nothing
