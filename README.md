@@ -11,7 +11,7 @@ KCL2 是一个基于 Plain Craft Launcher 2（PCL2）的独立第三方 Minecraf
 
 ## 状态
 
-KCL2 保留 PCL2 的版本下载、加载器安装、整合包管理、版本隔离和微软正版登录工作流。开源分支原本通过 `RestrictMcDownload` 关闭 Minecraft 下载入口；KCL2 已将该开关恢复为可用状态。
+KCL2 可以直接下载并启动 Minecraft：版本清单、客户端、依赖库与资源文件沿用 PCL2 原版的下载链路，即 Mojang 官方源（`launchermeta.mojang.com`、`piston-data.mojang.com`）与 BMCLAPI 国内镜像二选一/自动测速，并支持 Forge、NeoForge、Fabric、OptiFine、整合包安装、版本隔离和微软正版登录。开源分支原本通过 `RestrictMcDownload` 关闭下载入口；KCL2 已将该开关恢复为可用，下载页可正常拉取并安装游戏版本。
 
 当前工程是 Windows WPF / .NET Framework 4.8 应用，Windows EXE 由 GitHub Actions 的 Windows runner 构建。现有代码不能直接编译成 Java JAR 或原生 Linux ELF；Linux/JAR 需要单独进行跨平台界面移植，不能把 WPF 程序改名后伪装成跨平台产物。
 
@@ -19,7 +19,7 @@ KCL2 保留 PCL2 的版本下载、加载器安装、整合包管理、版本隔
 
 当常见启动器因为网络、维护或外部压力暂时不可用时，玩家仍需要一个可以进入本地游戏的备选入口。KCL2 的目标是在这种情况下延续版本下载、正版登录和本地实例管理能力。
 
-KCL2 不运营 Minecraft，也不运营任何多人服务器。未成年人充值、服务器封禁、道具纠纷、支付退款或服务器管理规则，请联系对应服主、服务器管理组、支付渠道或 Microsoft/Mojang 官方支持；这些事项不属于启动器可处理范围。
+KCL2 负责下载、安装和启动 Minecraft 本地版本，但 Minecraft 游戏本身的版权与服务归 Mojang/Microsoft 所有，KCL2 不销售游戏、不收取充值费用，也不运营任何多人服务器。未成年人充值、服务器封禁、道具纠纷、支付退款或服务器管理规则，请联系对应服主、服务器管理组、支付渠道或 Microsoft/Mojang 官方支持；这些事项不属于启动器可处理范围。
 
 ## 公平启动保护
 
