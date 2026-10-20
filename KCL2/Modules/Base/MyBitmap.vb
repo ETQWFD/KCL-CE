@@ -102,10 +102,37 @@ Public Class MyBitmap
             End If
         End Try
     End Sub
+    ''' <summary>
+    ''' 创建可用于编码器的 BitmapFrame。
+    ''' 正常情况下直接引用原始图像；在 WIC 元数据克隆未实现的运行环境（如 Wine）中，
+    ''' BitmapFrame.Create 会抛出 NotImplementedException，此时回退到不携带元数据的软件位图副本。
+    ''' </summary>
+    Private Shared Function SafeBitmapFrame(Image As ImageSource) As BitmapFrame
+        Try
+            Return BitmapFrame.Create(Image)
+        Catch ex As NotImplementedException
+            Dim SourceBitmap As BitmapSource = TryCast(Image, BitmapSource)
+            If SourceBitmap Is Nothing Then Throw
+            '统一转为 Pbgra32，规避索引/特殊像素格式，再复制到无元数据的软件位图
+            Dim Converted As New FormatConvertedBitmap(SourceBitmap, PixelFormats.Pbgra32, Nothing, 0)
+            Converted.Freeze()
+            Dim Width As Integer = Converted.PixelWidth
+            Dim Height As Integer = Converted.PixelHeight
+            Dim Stride As Integer = Width * 4
+            Dim Buffer(Stride * Height - 1) As Byte
+            Converted.CopyPixels(New Int32Rect(0, 0, Width, Height), Buffer, Stride, 0)
+            Dim Software As New WriteableBitmap(Width, Height, Converted.DpiX, Converted.DpiY, PixelFormats.Pbgra32, Nothing)
+            Runtime.InteropServices.Marshal.Copy(Buffer, 0, Software.BackBuffer, Buffer.Length)
+            Software.AddDirtyRect(New Int32Rect(0, 0, Width, Height))
+            Software.Unlock()
+            Software.Freeze()
+            Return BitmapFrame.Create(Software)
+        End Try
+    End Function
     Public Sub New(Image As ImageSource)
         Using MS = New MemoryStream()
             Dim Encoder = New PngBitmapEncoder()
-            Encoder.Frames.Add(BitmapFrame.Create(Image))
+            Encoder.Frames.Add(SafeBitmapFrame(Image))
             Encoder.Save(MS)
             Pic = New System.Drawing.Bitmap(MS)
         End Using
@@ -119,7 +146,7 @@ Public Class MyBitmap
     Public Sub New(Image As ImageBrush)
         Using MS = New MemoryStream()
             Dim Encoder = New BmpBitmapEncoder()
-            Encoder.Frames.Add(BitmapFrame.Create(Image.ImageSource))
+            Encoder.Frames.Add(SafeBitmapFrame(Image.ImageSource))
             Encoder.Save(MS)
             Pic = New System.Drawing.Bitmap(MS)
         End Using
