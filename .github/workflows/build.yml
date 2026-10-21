@@ -75,7 +75,7 @@ jobs:
         run: |
           for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -property installationPath`) do set VSPATH=%%i
           call "%VSPATH%\VC\Auxiliary\Build\vcvars64.bat"
-          cl /nologo /O2 /EHsc /utf-8 /D_UNICODE /DUNICODE bootstrapper\KCL2DependencySetup.cpp /Fo:publish\setup.obj /Fe:publish\KCL2DependencySetup.exe /link wininet.lib shell32.lib
+          cl /nologo /O2 /EHsc /utf-8 /D_UNICODE /DUNICODE bootstrapper\KCL2DependencySetup.cpp /Fo:publish\setup.obj /Fe:publish\KCL2DependencySetup.exe /link wininet.lib shell32.lib user32.lib
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
