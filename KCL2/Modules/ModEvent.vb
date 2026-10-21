@@ -395,7 +395,7 @@ Public Class CustomEvent
         RelativeUrl = RelativeUrl.Replace("/", "\").Lower.TrimStart("\")
 
         '确认实际路径
-        Dim Location As String, WorkingDir As String = Paths.Base & "KCL2"
+        Dim Location As String, WorkingDir As String = Paths.Base & "KCL"
         HelpTryExtract()
         If RelativeUrl.Contains(":\") Then
             '绝对路径

@@ -7,7 +7,7 @@ Public Class Application
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
         Try
             '核心初始化
-            MeloongCore.Main.Init("KCL2")
+            MeloongCore.Main.Init("KCL")
             MeloongCore.Wpf.Main.Init()
             If Not (e.Args.Contains("--update") OrElse e.Args.Contains("--gpu") OrElse e.Args.Contains("--memory")) Then '若是通过命令行调用，则不检查单例、不轮换日志（#9137）
                 WaitingMutex(e)
