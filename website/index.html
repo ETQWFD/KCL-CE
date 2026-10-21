@@ -3,11 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KCL2 - Minecraft 启动器</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23075e38%22/%3E%3Cstop offset=%221%22 stop-color=%22%237ee6a0%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22256%22 height=%22256%22 rx=%2248%22 fill=%22url(%23g)%22/%3E%3Cpath d=%22M42 38h50v74l62-74h64l-79 80 85 100h-70l-62-73v73H42z%22 fill=%22%23041610%22/%3E%3Crect x=%22174%22 y=%22166%22 width=%2244%22 height=%2244%22 rx=%228%22 fill=%22%237ee6a0%22/%3E%3C/svg%3E">
-<style>*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#14231a;background:#f5faf6;line-height:1.7}a{color:#087a43;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1080px;margin:0 auto;padding:0 24px}.hero{background:linear-gradient(135deg,#062b1c,#0b8a49);color:#fff;padding:88px 0 96px}.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:42px;align-items:center}.badge{display:inline-block;padding:5px 12px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:13px;margin-bottom:18px}h1{font-size:52px;line-height:1.12;margin:0 0 18px;letter-spacing:-.04em}.hero p{font-size:18px;color:#dff8e8;margin:0 0 28px}.actions{display:flex;gap:14px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:700}.btn:hover{text-decoration:none}.primary{background:#fff;color:#075d35}.ghost{border:1px solid rgba(255,255,255,.45);color:#fff}.panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:24px;backdrop-filter:blur(10px)}.panel strong{display:block;font-size:22px;margin-bottom:8px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:42px 0}.card{background:#fff;border:1px solid #dce9df;border-radius:16px;padding:24px}.card h2{font-size:19px;margin:0 0 10px}.card p{margin:0;color:#435449}.section{padding:52px 0}.note{background:#fff7e8;border:1px solid #f0d49a;border-radius:14px;padding:18px 20px;color:#5f4210}footer{padding:36px 0;color:#728096;font-size:14px}.doc{background:#fff;border:1px solid #dce9df;border-radius:18px;padding:38px;margin:36px 0}.doc h1{font-size:40px;color:#10291b;letter-spacing:-.03em}.doc h2{margin-top:34px;color:#10291b}.doc h3{margin-top:24px}.doc code{background:#eaf5ee;padding:2px 6px;border-radius:5px}.doc ul,.doc ol{padding-left:22px}.table{width:100%;border-collapse:collapse;margin:14px 0}.table th,.table td{border-bottom:1px solid #dfe9e2;padding:10px;text-align:left}.table th{background:#eef8f1}.admin{min-height:100vh;background:#071a10;color:#e9eef7;display:flex;align-items:center;justify-content:center;padding:24px}.admin-box{width:100%;max-width:860px;background:#0d2417;border:1px solid #24452f;border-radius:18px;padding:28px}.admin input{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #3a4b6b;background:#081f12;color:#fff;font-size:16px;margin:10px 0 16px}.admin button{padding:11px 18px;border:0;border-radius:10px;background:#0a9f55;color:#fff;font-weight:700;cursor:pointer}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.stat{background:#081f12;border:1px solid #234b32;border-radius:14px;padding:18px}.stat b{display:block;font-size:28px}.muted{color:#93a4bd;font-size:13px}.asset{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid #24452f}.hidden{display:none}@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.hero .wrap,.grid,.stat-grid{grid-template-columns:1fr}h1{font-size:38px}.doc{padding:24px}}</style>
+<title>KCL2 · Minecraft 启动器</title>
+<meta name="description" content="KCL2 是基于 Plain Craft Launcher 2 的第三方开源启动器，保留版本下载、加载器安装、整合包与微软正版登录，默认走官方与 BMCLAPI 双下载源。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22%3E%3Crect width=%22256%22 height=%22256%22 rx=%2248%22 fill=%22%230a7a45%22/%3E%3Cpath d=%22M42 38h50v74l62-74h64l-79 80 85 100h-70l-62-73v73H42z%22 fill=%22%23041610%22/%3E%3Crect x=%22172%22 y=%22164%22 width=%2246%22 height=%2246%22 rx=%229%22 fill=%22%239beec0%22/%3E%3C/svg%3E">
+<style>
+:root{--green:#0b7a46;--green-d:#075c35;--ink:#16241c;--mut:#5b6c61;--line:#e2ece5;--bg:#f7faf8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+a{color:var(--green);text-decoration:none}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header.nav{position:sticky;top:0;background:rgba(247,250,248,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--green-d)}
+.brand svg{width:26px;height:26px}
+.nav .sp{flex:1}
+.nav a.navlink{color:var(--mut);font-size:15px}
+.nav a.navlink:hover{color:var(--green)}
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:40px;line-height:1.2;margin:0 0 14px;letter-spacing:-.02em}
+.hero p.lead{font-size:17px;color:var(--mut);max-width:680px;margin:0 0 26px}
+.dl{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 22px;border-radius:9px;font-weight:700;font-size:16px}
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green-d)}
+.btn.sec{background:#fff;color:var(--green-d);border:1px solid #bcd8c8}
+.btn.sec:hover{border-color:var(--green)}
+.hero small{display:block;margin-top:16px;color:var(--mut);font-size:13px}
+.shots{padding:48px 0 8px}
+.shot{margin:0 0 40px}
+.shot img{width:100%;display:block;border:1px solid var(--line);border-radius:12px;background:#fff}
+.shot h3{font-size:19px;margin:0 0 6px}
+.shot p{color:var(--mut);margin:0 0 14px;font-size:15px}
+.feat{padding:30px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.f{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.f b{display:block;margin-bottom:6px;font-size:16px}
+.f span{color:var(--mut);font-size:14px}
+.editions{padding:24px 0 8px}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.e{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px}
+.e h3{margin:0 0 8px;font-size:20px}
+.e p{color:var(--mut);font-size:14px;margin:0 0 18px}
+.e .btn{width:100%;text-align:center}
+.notice{margin:34px 0;background:#eef7f1;border:1px solid #cde7d8;border-radius:12px;padding:20px 22px;color:#27513b;font-size:14.5px}
+.notice b{color:var(--green-d)}
+.links{padding:10px 0 40px;display:flex;gap:22px;flex-wrap:wrap;font-size:15px}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-size:13px}
+@media(max-width:760px){.grid,.egrid{grid-template-columns:1fr}.hero h1{font-size:30px}}
+</style>
 </head>
-<body class="">
-<header class="hero"><div class="wrap"><div><span class="badge">第三方 Minecraft 启动器</span><h1>KCL2</h1><p>保留原版下载、正版登录、版本隔离和 Mod 加载工作流，在启动器不可用时提供一个备选入口。</p><div class="actions"><a class="btn primary" href="https://github.com/ETQWFD/KCL2/releases/download/continuous/KCL2-portable.zip">下载 Windows 版</a><a class="btn ghost" href="manual.html">查看使用手册</a><a class="btn ghost" href="https://github.com/ETQWFD/KCL2">源代码</a></div></div><div class="panel"><strong>能下载，也能启动</strong><span>KCL2 可直接下载并启动 Minecraft 版本，沿用 Mojang 官方源与 BMCLAPI 镜像，支持正版登录、版本隔离与 Mod。游戏版权归 Mojang/Microsoft，KCL2 不销售游戏、不收充值、不运营服务器。</span></div></div></header><main class="wrap"><section class="grid"><article class="card"><h2>版本下载</h2><p>支持官方清单、镜像源、Forge、NeoForge、Fabric、OptiFine 与整合包安装流程。</p></article><article class="card"><h2>正版登录</h2><p>支持微软账号设备码授权。首次使用需配置属于 KCL2 的 Azure 公共客户端 ID。</p></article><article class="card"><h2>本地数据</h2><p>程序目录使用 kcl 文件夹保存日志、图片、音乐和自定义主页。</p></article><article class="card"><h2>公平启动</h2><p>启动前检查已知作弊客户端、作弊 Mod 和未授权 Java 注入参数，命中后停止启动并写出拦截记录。</p></article></section><section class="note"><strong>来源声明</strong><p>KCL2 是基于 Plain Craft Launcher 2 的独立第三方修改版。原作为 Plain Craft Launcher，原作者为 龙腾猫跃（LTCat），仓库内保留原许可证与署名。KCL2 修改由 ETC Team 维护，原作者不运营、不担保也不承担本修改版支持责任。</p></section><section class="section"><h2>为什么需要备选启动器</h2><p>当所有常见启动器暂时不可用时，游戏不应该因此停止。KCL2 负责下载、安装、启动和管理本地 Minecraft 版本，不销售游戏、不收取充值费用，也不运营多人服务器。未成年人充值、服务器封禁、道具和退款问题，请联系服主、支付渠道或 Microsoft/Mojang 官方支持。</p></section><section class="section"><h2>开始使用</h2><ol><li>从 Release 下载压缩包。</li><li>解压到非临时目录后运行 KCL2.exe。</li><li>首次启动阅读并同意第三方修改与免责声明。</li><li>在下载页选择 Minecraft 版本，或在账户页使用微软登录。</li></ol></section></main><footer><div class="wrap">KCL2 by ETC Team · Based on PCL by 龙腾猫跃（LTCat） · Minecraft 版权归 Mojang/Microsoft 所有</div></footer>
+<body>
+<header class="nav"><div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 256 256"><rect width="256" height="256" rx="48" fill="#0b7a46"/><path d="M42 38h50v74l62-74h64l-79 80 85 100h-70l-62-73v73H42z" fill="#041610"/></svg>
+    KCL2
+  </div>
+  <div class="sp"></div>
+  <a class="navlink" href="#shots">截图</a>
+  <a class="navlink" href="#editions">下载</a>
+  <a class="navlink" href="manual.html">使用手册</a>
+  <a class="navlink" href="https://github.com/ETQWFD/KCL2">源码</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>当常见启动器暂时不可用时，<br>仍要有一个能进入游戏的入口。</h1>
+  <p class="lead">KCL2 基于 Plain Craft Launcher 2 二次开发，保留版本下载、加载器安装、整合包管理、版本隔离与微软正版登录。版本文件默认同时走 Mojang 官方源与 BMCLAPI 镜像源，任一源失败会自动切换，支持多线程与断点续传。</p>
+  <div class="dl">
+    <a class="btn primary" href="https://github.com/ETQWFD/KCL2/releases/download/continuous/KCL2-portable.zip">下载 KCL2（单文件 EXE）</a>
+    <a class="btn sec" href="https://github.com/ETQWFD/KCL2/releases/download/continuous/KCL2DependencySetup.exe">.NET 依赖补丁（仅启动报错时需要）</a>
+  </div>
+  <small>解压后只有一个 KCL2.exe，首次运行在同目录生成 KCL 与 .minecraft 两个文件夹。要求 Windows 7 及以上 64 位、已安装 .NET Framework 4.8。</small>
+</div></section>
+
+<section class="shots wrap" id="shots">
+  <div class="shot">
+    <h3>启动页</h3>
+    <p>离线与正版登录、游戏用户名、版本入口，沿用 PCL2 的界面布局，默认绿色主题。</p>
+    <img src="assets/shot-home.png" alt="KCL2 启动主界面" loading="lazy">
+  </div>
+  <div class="shot">
+    <h3>下载页</h3>
+    <p>直接拉取 Mojang 官方版本清单，正式版、预览版、远古版分组展示，可下载并安装原版与各类加载器。</p>
+    <img src="assets/shot-download.png" alt="KCL2 版本下载页面" loading="lazy">
+  </div>
+  <div class="shot">
+    <h3>关于与更新</h3>
+    <p>保留原作者与上游的英文署名；每次启动自动检查本仓库更新，可选择立即更新、以后再说或忽略该版本。</p>
+    <img src="assets/shot-about.png" alt="KCL2 关于与鸣谢页面" loading="lazy">
+  </div>
+</section>
+
+<section class="feat wrap"><div class="grid">
+  <div class="f"><b>真实可用的版本下载</b><span>官方 + BMCLAPI 双源、多线程、断点续传与失败重试，解决下载慢和更新中断。</span></div>
+  <div class="f"><b>微软正版登录</b><span>支持正版账号授权登录；登录授权名称显示为 KCL2。</span></div>
+  <div class="f"><b>单文件分发</b><span>全部程序集内嵌进一个 EXE，不释放多余 DLL，配置统一写入 KCL 文件夹。</span></div>
+  <div class="f"><b>启动前公平性检查</b><span>识别常见作弊客户端 / 作弊 Mod 与 JVM 注入参数，命中则不启动并写入日志。</span></div>
+  <div class="f"><b>整合包兼容</b><span>保留版本隔离与整合包元数据读写，整合包安装目录与原版习惯一致。</span></div>
+  <div class="f"><b>软件内自动更新</b><span>比对本仓库最新提交，更新包在软件内下载并自动替换重启。</span></div>
+</div></section>
+
+<section class="editions wrap" id="editions"><div class="egrid">
+  <div class="e">
+    <h3>KCL2</h3>
+    <p>主力版本。单文件 EXE，面向普通玩家，持续维护与修复。</p>
+    <a class="btn primary" href="https://github.com/ETQWFD/KCL2/releases/download/continuous/KCL2-portable.zip">下载 KCL2</a>
+  </div>
+  <div class="e">
+    <h3>KCL CE（社区版）</h3>
+    <p>社区版构建，与 KCL2 使用同一套代码与修复，供偏好社区渠道的用户下载。</p>
+    <a class="btn sec" href="https://github.com/ETQWFD/KCL-CE/releases/download/continuous/KCLCE-portable.zip">下载 KCL CE</a>
+  </div>
+</div></section>
+
+<div class="wrap"><div class="notice">
+  <b>关于责任与运营：</b>KCL2 不运营 Minecraft，也不运营任何多人服务器。未成年人充值、服务器封禁、道具纠纷、支付退款或服务器管理规则，请联系对应服主、服务器管理组、支付渠道或 Microsoft / Mojang 官方支持，这些不属于启动器可处理范围。本项目按 MIT 许可开源，原作者龙腾猫跃 / LTCat 及 PCL 上游保留相应署名，KCL2 的改动由 ETC Team 维护，按“现状”提供、不附带担保。
+</div></div>
+
+<section class="wrap links">
+  <a href="manual.html">使用手册</a>
+  <a href="https://github.com/ETQWFD/KCL2/issues">问题反馈（Issues）</a>
+  <a href="mailto:2416444244@qq.com">邮件反馈</a>
+  <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=b31JnHKqph3vMmCIhk2htihvcREH2F1t&authKey=U8JJu2GFgtaIvRnov%2FhH7%2Bcq08hv8JM6q5GBdGBzF1yZXYTSGSbQP9O%2FIh%2BVqby9&noverify=0&group_code=1121514619">加入 QQ 群</a>
+</section>
+
+<footer><div class="wrap">
+  KCL2 · ETC Team · 基于 Plain Craft Launcher 2 的第三方修改，遵循 MIT 许可。Minecraft 及相关标识归 Microsoft / Mojang 所有。
+</div></footer>
 </body>
 </html>
