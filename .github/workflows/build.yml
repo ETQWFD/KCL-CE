@@ -64,11 +64,11 @@ jobs:
       - name: Package portable release (single exe)
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path 'publish\KCL2' | Out-Null
           # 单文件：所有托管程序集均已作为资源嵌入 KCL2.exe（运行时由 AssemblyResolve 从内存加载），
           # 因此发布目录只保留一个 exe；首次运行会在同目录生成 KCL 与 .minecraft 两个文件夹。
-          Copy-Item -Path 'KCL2\bin\KCL2.exe' -Destination 'publish\KCL2\KCL2.exe' -Force
-          Compress-Archive -Path 'publish\KCL2\KCL2.exe' -DestinationPath 'publish\KCL2-portable.zip' -Force
+          New-Item -ItemType Directory -Force -Path 'publish\KCLCE' | Out-Null
+          Copy-Item -Path 'KCL2\bin\KCL2.exe' -Destination 'publish\KCLCE\KCLCE.exe' -Force
+          Compress-Archive -Path 'publish\KCLCE\KCLCE.exe' -DestinationPath 'publish\KCLCE-portable.zip' -Force
 
       - name: Build native dependency bootstrapper
         shell: cmd
@@ -80,8 +80,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: KCL2-portable
-          path: publish/KCL2-portable.zip
+          name: KCLCE-portable
+          path: publish/KCLCE-portable.zip
 
       - name: Publish continuous release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -93,6 +93,6 @@ jobs:
           gh release delete $tag --yes --repo $env:GITHUB_REPOSITORY 2>$null
           gh release create $tag `
             --target $env:GITHUB_SHA `
-            --title 'KCL2 Continuous Build' `
+            --title 'KCL CE Continuous Build' `
             --notes '自动构建的最新 Windows 单文件版。解压后仅一个 KCL2.exe，首次运行生成 KCL 与 .minecraft 两个文件夹。' `
-            publish/KCL2-portable.zip publish/KCL2/KCL2.exe publish/KCL2DependencySetup.exe
+            publish/KCLCE-portable.zip publish/KCLCE/KCLCE.exe publish/KCL2DependencySetup.exe
