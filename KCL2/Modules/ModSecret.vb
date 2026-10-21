@@ -152,7 +152,7 @@ Friend Module ModSecret
 #Region "更新"
 
     Friend Sub UpdateCheckByButton()
-        OpenWebsite("https://github.com/ETQWFD/KCL2/releases")
+        ModKclUpdate.CheckUpdateByButton()
     End Sub
 
     Friend IsUpdateWaitingRestart As Boolean = False

@@ -87,5 +87,5 @@ jobs:
           gh release create $tag `
             --target $env:GITHUB_SHA `
             --title 'KCL2 Continuous Build' `
-            --notes '自动构建的最新 Windows 便携版。如遇问题，请在 Issues 附上 kcl 日志。' `
-            publish/KCL2-portable.zip
+            --notes '自动构建的最新 Windows 单文件版。解压后仅一个 KCL2.exe，首次运行生成 KCL 与 .minecraft 两个文件夹。' `
+            publish/KCL2-portable.zip publish/KCL2/KCL2.exe

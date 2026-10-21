@@ -5,6 +5,8 @@ Public Class Settings
     Public Shared ReadOnly Entries As Dictionary(Of String, Setting) = (New List(Of Setting) From {
         New Setting("Identify", "", Source:=Sources.Registry),
         New Setting("KCL2LicenseAccepted", False, Source:=Sources.Registry),
+        New Setting("KCL2UpdateIgnoreVersion", "", Source:=Sources.Registry),
+        New Setting("KCL2AnnounceSeenId", "", Source:=Sources.Registry),
         New Setting("WindowHeight", 550),
         New Setting("WindowWidth", 900),
         New Setting("AprilYear", 0, Source:=Sources.Registry, Encrypted:=True),
