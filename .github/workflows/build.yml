@@ -61,12 +61,14 @@ jobs:
           KCL2_CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
         run: msbuild "KCL2.sln" /p:Configuration=Release /p:Platform="Any CPU" -m -v:minimal
 
-      - name: Package portable release
+      - name: Package portable release (single exe)
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path 'publish\KCL2' | Out-Null
-          Copy-Item -Path 'KCL2\bin\*' -Destination 'publish\KCL2' -Recurse -Force
-          Compress-Archive -Path 'publish\KCL2\*' -DestinationPath 'publish\KCL2-portable.zip' -Force
+          # 单文件：所有托管程序集均已作为资源嵌入 KCL2.exe（运行时由 AssemblyResolve 从内存加载），
+          # 因此发布目录只保留一个 exe；首次运行会在同目录生成 KCL 与 .minecraft 两个文件夹。
+          Copy-Item -Path 'KCL2\bin\KCL2.exe' -Destination 'publish\KCL2\KCL2.exe' -Force
+          Compress-Archive -Path 'publish\KCL2\KCL2.exe' -DestinationPath 'publish\KCL2-portable.zip' -Force
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

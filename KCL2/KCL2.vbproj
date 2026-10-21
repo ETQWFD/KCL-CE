@@ -103,7 +103,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>KCL2.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <WarningLevel>1</WarningLevel>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
@@ -111,6 +110,8 @@
     <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>RELEASE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -836,6 +837,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Heads\Logo.png" />
+    <Resource Include="Images\Heads\Etc.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\transformer.jar" />
@@ -916,15 +918,17 @@
     <ProjectReference Include="..\MeloongCore\Shared\MeloongCore.csproj">
       <Project>{d22bbf3c-2177-0208-4e29-8466aa41ac6f}</Project>
       <Name>MeloongCore</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\MeloongCore\Wpf\MeloongCore.Wpf.csproj">
       <Project>{2dffe2a0-1101-816b-d240-f644b2d74a68}</Project>
       <Name>MeloongCore.Wpf</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\PCLCS\PCLCS.csproj">
       <Project>{32de4aaf-f4d6-42c5-9604-19236de96c69}</Project>
       <Name>PCLCS</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
