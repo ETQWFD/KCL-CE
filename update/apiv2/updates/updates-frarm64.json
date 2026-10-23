@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "file_name": "KCL-CE-2.15.1-arm64.zip",
+      "file_name": "KCL-CE-2.15.1-kcl.1-arm64.zip",
       "version": {
-        "channel": "beta",
-        "name": "2.15.1",
-        "code": 524
+        "name": "2.15.1-kcl.1",
+        "code": 600,
+        "channel": "stable"
       },
-      "upd_time": "2026-10-24 00:00:00",
+      "upd_time": "2026-10-23 22:51:44",
       "downloads": [
-        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.1-kcl.1/KCL-CE-2.15.1-arm64.zip"
+        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.1-kcl.1/KCL-CE-2.15.1-kcl.1-arm64.zip"
       ],
       "patches": [],
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-      "changelog": "KCL CE 首发（基于 PCL 社区版）"
+      "sha256": "4cfe065717993d2cdc50a4d7526190548a05cf1c407b84a5593014dded87c10b",
+      "changelog": "KCL CE 2.15.1-kcl.1"
     }
   ]
 }
