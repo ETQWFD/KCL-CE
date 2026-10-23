@@ -54,7 +54,6 @@
                         local:CustomEventService.EventType="OpenUrl"
                         Text="赞助作者" />
                     <local:MyListItem
-                        Grid.Row="0"
                         Grid.Column="1"
                         Margin="-5,0,15,0"
                         Grid.Row="1"
@@ -62,7 +61,6 @@
                         IsHitTestVisible="False"
                         Title="{DynamicResource Setup.About.OriginalAuthor.Name}" />
                     <local:MyListItem
-                        Grid.Row="1"
                         Grid.Column="1"
                         Margin="-5,0,15,0"
                         Grid.Row="2"
