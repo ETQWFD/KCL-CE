@@ -1,0 +1,128 @@
+name: KCL CE Build & Release
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（如 2.15.1-kcl.1）'
+        required: true
+        default: '2.15.1-kcl.1'
+      prerelease:
+        description: '是否为预发布'
+        required: true
+        type: boolean
+        default: false
+  push:
+    tags:
+      - 'v*'
+
+env:
+  PCL_WRITE_SECRET: '1'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            arch: x64
+          - rid: win-arm64
+            arch: ARM64
+    outputs:
+      ver: ${{ steps.meta.outputs.ver }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - id: meta
+        shell: pwsh
+        run: |
+          $v = "${{ github.event.inputs.version }}"
+          if (-not $v) { $v = "${GITHUB_REF_NAME}" -replace '^v','' }
+          echo "ver=$v" >> $env:GITHUB_OUTPUT
+          echo "VER=$v" >> $env:GITHUB_ENV
+
+      - name: Publish single-file (${{ matrix.rid }})
+        shell: pwsh
+        run: |
+          dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
+            -c Release -p:Platform=${{ matrix.arch }} -r ${{ matrix.rid }} `
+            --self-contained true -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:EnableCompressionInSingleFile=true `
+            -p:DebugType=None -p:DebugSymbols=false `
+            -o artifact
+
+      - name: Stage, hash, metadata
+        shell: pwsh
+        run: |
+          $arch="${{ matrix.arch }}".ToLower(); $v="$env:VER"
+          New-Item -ItemType Directory -Force -Path dist,update/apiv2/updates | Out-Null
+          Copy-Item "artifact/KCL CE.exe" "dist/KCL-CE-$v-$arch.exe"
+          Compress-Archive -Path "artifact/KCL CE.exe" -DestinationPath "dist/KCL-CE-$v-$arch.zip" -Force
+          $sha=(Get-FileHash "dist/KCL-CE-$v-$arch.exe" -Algorithm SHA256).Hash.ToLower()
+          $base="https://github.com/ETQWFD/KCL-CE/releases/download/v$v/"
+          $channel=[ordered]@{ assets=@([ordered]@{
+            file_name="KCL-CE-$v-$arch.zip"
+            version=@{channel="stable";name=$v;code=600}
+            upd_time=(Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            downloads=@($base+"KCL-CE-$v-$arch.zip")
+            patches=@(); sha256=$sha; changelog="KCL CE $v" }) }
+          ($channel|ConvertTo-Json -Depth 8)|Out-File -Encoding utf8 "update/apiv2/updates/updates-sr$arch.json"
+          Copy-Item "update/apiv2/updates/updates-sr$arch.json" "update/apiv2/updates/updates-fr$arch.json"
+          '{"content":[]}'|Out-File -Encoding utf8 "update/apiv2/announcement.json"
+          # cache.json：键=清单名，值=该文件 MD5
+          $cache=@{}
+          Get-ChildItem update/apiv2/updates/*.json | ForEach-Object {
+            $cache[$_.BaseName]=((Get-FileHash $_.FullName -Algorithm MD5).Hash.ToLower())
+          }
+          $cache["announcement"]=((Get-FileHash update/apiv2/announcement.json -Algorithm MD5).Hash.ToLower())
+          ($cache|ConvertTo-Json)|Out-File -Encoding utf8 "update/apiv2/cache.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kcl-ce-${{ matrix.arch }}
+          path: |
+            dist/*
+            update/**
+
+  publish:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: alldist
+      - name: Create release and commit metadata
+        shell: pwsh
+        run: |
+          $v="${{ needs.build.outputs.ver }}"
+          New-Item -ItemType Directory -Force -Path update/apiv2/updates | Out-Null
+          Copy-Item alldist/kcl-ce-x64/update/apiv2/updates/* update/apiv2/updates/ -Force
+          Copy-Item alldist/kcl-ce-x64/update/apiv2/cache.json update/apiv2/cache.json -Force
+          Copy-Item alldist/kcl-ce-x64/update/apiv2/announcement.json update/apiv2/announcement.json -Force
+          $files=@()
+          Get-ChildItem -Recurse alldist -Include *.exe,*.zip | ForEach-Object { $files += $_.FullName }
+          $pre='${{ github.event.inputs.prerelease }}'
+          if ($pre -eq 'true') {
+            gh release create "v$v" $files --title "KCL CE v$v" --notes "KCL CE $v" --prerelease --repo ETQWFD/KCL-CE
+          } else {
+            gh release create "v$v" $files --title "KCL CE v$v" --notes "KCL CE $v" --repo ETQWFD/KCL-CE
+          }
+          git config user.name "ETC Team"
+          git config user.email "2416444244@qq.com"
+          git add update
+          git commit -m "update: KCL CE v$v metadata" || echo "no metadata change"
+          git push origin HEAD:main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

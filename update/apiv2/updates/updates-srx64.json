@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "file_name": "KCL-CE-2.15.1-x64.zip",
+      "version": {
+        "channel": "stable",
+        "name": "2.15.1",
+        "code": 524
+      },
+      "upd_time": "2026-10-24 00:00:00",
+      "downloads": [
+        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.1-kcl.1/KCL-CE-2.15.1-x64.zip"
+      ],
+      "patches": [],
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "changelog": "KCL CE 首发（基于 PCL 社区版）"
+    }
+  ]
+}
