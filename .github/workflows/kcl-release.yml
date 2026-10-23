@@ -109,8 +109,15 @@ jobs:
           $v="${{ needs.build.outputs.ver }}"
           New-Item -ItemType Directory -Force -Path update/apiv2/updates | Out-Null
           Copy-Item alldist/kcl-ce-x64/update/apiv2/updates/* update/apiv2/updates/ -Force
-          Copy-Item alldist/kcl-ce-x64/update/apiv2/cache.json update/apiv2/cache.json -Force
+          Copy-Item alldist/kcl-ce-arm64/update/apiv2/updates/* update/apiv2/updates/ -Force
           Copy-Item alldist/kcl-ce-x64/update/apiv2/announcement.json update/apiv2/announcement.json -Force
+          # 合并双架构后重算 cache.json（键=清单名，值=MD5）
+          $cache=[ordered]@{}
+          Get-ChildItem update/apiv2/updates/*.json | ForEach-Object {
+            $cache[$_.BaseName]=((Get-FileHash $_.FullName -Algorithm MD5).Hash.ToLower())
+          }
+          $cache['announcement']=((Get-FileHash update/apiv2/announcement.json -Algorithm MD5).Hash.ToLower())
+          ($cache|ConvertTo-Json)|Out-File -Encoding utf8 update/apiv2/cache.json
           $files=@()
           Get-ChildItem -Recurse alldist -Include *.exe,*.zip | ForEach-Object { $files += $_.FullName }
           $pre='${{ github.event.inputs.prerelease }}'
