@@ -3576,7 +3576,7 @@
     <sys:String x:Key="Update.Action">更新</sys:String>
     <sys:String x:Key="Update.Available">启动器有新版本可用（{0} -&gt; {1}）&#xA;是否立即更新？</sys:String>
     <sys:String x:Key="Update.Check.Failed">无法获取最新版本信息，请检查网络连接</sys:String>
-    <sys:String x:Key="Update.CommunityNotice.Body">你正在使用来自 PCL-Community 的 KCL CE，遇到问题请不要向原版仓库反馈！&#xA;PCL-Community 及其成员与龙腾猫跃无从属关系，且均不会为您的使用做担保。&#xA;&#xA;如果你是意外下载的 KCL CE，建议下载原版 PCL 使用。&#xA;如果你是意外下载的 KCL CE，建议下载原版 PCL 使用。&#xA;如果你是意外下载的 KCL CE，建议下载原版 PCL 使用。&#xA;&#xA;该版本与原版的特性区别：&#xA;- 主题切换：仅部分固定蓝色系主题，没有计划新增其它主题。&#xA;- 百宝箱：缺失部分原版中的内容（回声洞、千万别点）。&#xA;&#xA;此提示会在启动器更新后展示一次。</sys:String>
+    <sys:String x:Key="Update.CommunityNotice.Body">欢迎使用 KCL CE。这是基于 PCL Community 社区版二次开发的第三方再发行版本，由 ETC Team（龙腾OS）维护，并非 PCL Community 或龙腾猫跃（LTCat）的官方版本。&#xA;&#xA;本版本完整保留并感谢原作者与上游的全部署名及开源贡献；原作者与上游不参与本版本的开发维护，也不为本版本承担任何责任。&#xA;KCL CE 不运营 Minecraft，也不运营任何多人服务器。未成年人充值、服务器封禁、道具或支付退款等纠纷，请联系对应服主、服务器管理组或 Microsoft / Mojang 官方渠道处理。&#xA;本软件依据 MIT 许可按“现状”提供，不附带任何担保，使用风险由使用者自行承担。&#xA;&#xA;点击“我知道了”即表示你已阅读并同意以上内容。</sys:String>
     <sys:String x:Key="Update.CommunityNotice.Confirm">我知道了</sys:String>
     <sys:String x:Key="Update.CommunityNotice.Title">KCL CE 版本说明</sys:String>
     <sys:String x:Key="Update.Error.FetchFailed">获取启动器更新失败，请检查网络连接</sys:String>

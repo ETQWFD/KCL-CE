@@ -1,10 +1,10 @@
 {
   "name": "KCL CE",
   "version": {
-    "base": "2.15.2",
+    "base": "2.15.3",
     "upstream": "2.12.1",
     "suffix": "",
-    "code": 600
+    "code": 610
   },
   "licenses": [
     {

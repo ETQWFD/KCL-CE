@@ -3520,7 +3520,7 @@
     <sys:String x:Key="Update.Action">更新</sys:String>
     <sys:String x:Key="Update.Available">啟動器有新版本可用（{0} -&gt; {1}）&#xA;是否立即更新？</sys:String>
     <sys:String x:Key="Update.Check.Failed">無法取得最新版本資訊，請檢查網路連線</sys:String>
-    <sys:String x:Key="Update.CommunityNotice.Body">你正在使用來自 PCL-Community 的 KCL CE，遇到問題請不要向原版儲存庫回饋！&#xA;PCL-Community 及其成員與龍騰貓躍無從屬關係，且均不會為您的使用做擔保。&#xA;&#xA;如果你是意外下載的 KCL CE，建議下載原版 PCL 使用。&#xA;如果你是意外下載的 KCL CE，建議下載原版 PCL 使用。&#xA;如果你是意外下載的 KCL CE，建議下載原版 PCL 使用。&#xA;&#xA;該版本與原版的特性區別：&#xA;- 主題切換：僅部分固定藍色系主題，沒有計劃新增其他主題。&#xA;- 百寶箱：缺失部分原版中的內容（回聲洞、千萬別點）。&#xA;&#xA;此提示會在啟動器更新後展示一次。</sys:String>
+    <sys:String x:Key="Update.CommunityNotice.Body">歡迎使用 KCL CE。这是基于 PCL Community 社区版二次開發的第三方再發行版本，由 ETC Team（龙腾OS）維護，並非 PCL Community 或龍騰貓躍（LTCat）的官方版本。&#xA;&#xA;本版本完整保留并感谢原作者与上游的全部署名及开源贡献；原作者与上游不參與本版本的开发維護，也不为本版本承擔任何责任。&#xA;KCL CE 不營運 Minecraft，也不營運任何多人服务器。未成年人儲值、服务器封禁、道具或支付退款等糾紛，請聯繫对应服主、服务器管理組或 Microsoft / Mojang 官方渠道處理。&#xA;本软件依據 MIT 许可按「現狀」提供，不附帶任何擔保，使用风险由使用者自行承擔。&#xA;&#xA;點擊“我知道了”即表示你已閱讀並同意以上內容。</sys:String>
     <sys:String x:Key="Update.CommunityNotice.Confirm">我知道了</sys:String>
     <sys:String x:Key="Update.CommunityNotice.Title">KCL CE 版本說明</sys:String>
     <sys:String x:Key="Update.Error.FetchFailed">取得啟動器更新失敗，請檢查網路連線</sys:String>

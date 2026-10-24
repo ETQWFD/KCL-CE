@@ -145,8 +145,95 @@ public static class EncryptHelper
 
     #region "密钥存储和获取"
 
+    private const uint SOFTWARE_KEY_VERSION = 100;
+
     private static readonly object _KeyLock = new();
     private static byte[]? _cachedKey;
+
+    /// <summary>
+    /// 本机 CNG DPAPI（NCrypt*）是否真正可用。Wine / 部分精简系统虽然存在 ncrypt.dll，
+    /// 但缺少 NCryptCreateProtectionDescriptor 等导出，运行时 P/Invoke 会被系统层直接 abort，
+    /// 托管 try/catch 无法拦截，因此必须在【真正调用之前】探测出来并走软件降级。
+    /// </summary>
+    private static readonly Lazy<bool> _CngDpapiAvailable = new(_ProbeCngDpapi);
+
+    private static bool _IsCngDpapiAvailable() => _CngDpapiAvailable.Value;
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    private static extern IntPtr NativeLoadLibrary(string lpFileName);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+    private static extern IntPtr NativeGetProcAddress(IntPtr hModule, string procName);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static extern bool NativeFreeLibrary(IntPtr hModule);
+
+    private static bool _ProbeCngDpapi()
+    {
+        try
+        {
+            // Wine / Proton 的 ntdll 一定导出 wine_get_version，真实 Windows 没有。命中即判定不可用。
+            var ntdll = NativeLoadLibrary("ntdll.dll");
+            if (ntdll != IntPtr.Zero)
+            {
+                if (NativeGetProcAddress(ntdll, "wine_get_version") != IntPtr.Zero)
+                {
+                    NativeFreeLibrary(ntdll);
+                    return false;
+                }
+                NativeFreeLibrary(ntdll);
+            }
+
+            var ncrypt = NativeLoadLibrary("ncrypt.dll");
+            if (ncrypt == IntPtr.Zero) return false;
+            try
+            {
+                // 三个函数缺一即视为 CNG DPAPI 不可用，避免运行时 abort。
+                return NativeGetProcAddress(ncrypt, "NCryptCreateProtectionDescriptor") != IntPtr.Zero
+                    && NativeGetProcAddress(ncrypt, "NCryptProtectSecret") != IntPtr.Zero
+                    && NativeGetProcAddress(ncrypt, "NCryptUnprotectSecret") != IntPtr.Zero;
+            }
+            finally
+            {
+                NativeFreeLibrary(ncrypt);
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>不依赖系统 DPAPI 的软件封装（仅在 CNG 不可用时使用）：AES-256-CBC，密钥来自固定应用密钥的 SHA256，随机 IV。</summary>
+    private static byte[] _SoftwareWrapKey(byte[] rawKey)
+    {
+        using var aes = Aes.Create();
+        aes.KeySize = 256;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.PKCS7;
+        aes.Key = SHA256.HashData(_Key);
+        aes.GenerateIV();
+        using var enc = aes.CreateEncryptor();
+        var cipher = enc.TransformFinalBlock(rawKey, 0, rawKey.Length);
+        var result = new byte[16 + cipher.Length];
+        Buffer.BlockCopy(aes.IV, 0, result, 0, 16);
+        Buffer.BlockCopy(cipher, 0, result, 16, cipher.Length);
+        return result;
+    }
+
+    private static byte[] _SoftwareUnwrapKey(ReadOnlySpan<byte> stored)
+    {
+        if (stored.Length <= 16) throw new ArgumentException("Software key blob too short");
+        using var aes = Aes.Create();
+        aes.KeySize = 256;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.PKCS7;
+        aes.Key = SHA256.HashData(_Key);
+        aes.IV = stored[..16].ToArray();
+        using var dec = aes.CreateDecryptor();
+        return dec.TransformFinalBlock(stored.ToArray(), 16, stored.Length - 16);
+    }
 
     /// <summary>
     /// 用户密钥。只在成功获取后缓存——失败不会被记住，下次访问会重新尝试。<br/>
@@ -190,11 +277,21 @@ public static class EncryptHelper
     private static byte[] _ReadKey(string keyFile)
     {
         var data = EncryptionData.FromBytes(File.ReadAllBytes(keyFile));
+        var cngAvailable = _IsCngDpapiAvailable();
         switch (data.Version)
         {
+            case SOFTWARE_KEY_VERSION:
+                // 软件存储密钥，任何平台都可解（用于 Wine / 无 CNG 环境）
+                return _SoftwareUnwrapKey(data.Data);
             case 2:
+                // CNG DPAPI 密钥：仅在确认可用时才调用，否则直接判废以触发软件密钥重建（避免原生 abort）
+                if (!cngAvailable)
+                    throw new CryptographicException("当前环境不支持 CNG DPAPI，旧用户密钥将重建为软件密钥");
                 return CngProtectedData.Unprotect(data.Data, _Key, DataProtectionScope.CurrentUser);
             case 1:
+                // 旧 CAPI DPAPI 密钥：Wine 等环境同样可能不完整，不可用时直接判废重建
+                if (!cngAvailable)
+                    throw new CryptographicException("当前环境不支持系统 DPAPI，旧用户密钥将重建为软件密钥");
                 var legacyKey = ProtectedData.Unprotect(data.Data, _Key, System.Security.Cryptography.DataProtectionScope.CurrentUser);
                 if (_TryProtect(legacyKey, out var migrated) && _WriteKeyFile(keyFile, migrated))
                     LogWrapper.Info("Encryption", $"用户密钥已迁移至 version 2（CNG DPAPI）：{keyFile}");
@@ -204,18 +301,31 @@ public static class EncryptHelper
         }
     }
 
-    /// <summary>生成并落盘一把新密钥。本机 DPAPI 不可用时抛出（不伪造密钥，避免每次启动换钥匙）。</summary>
+    /// <summary>生成并落盘一把新密钥。优先用系统 DPAPI；不可用（Wine/精简系统）时降级为软件存储，绝不让程序崩溃。</summary>
     private static byte[] _CreateKey(string keyFile)
     {
         var key = new byte[32];
         RandomNumberGenerator.Fill(key);
-        if (!_TryProtect(key, out var storeData))
-            throw new InvalidOperationException("本机 DPAPI 不可用，无法创建用户密钥");
-        _QuarantineBrokenKeyFile(keyFile); // 已确认能重建，才动原文件
-        if (!_WriteKeyFile(keyFile, storeData))
-            LogWrapper.Error("Encryption", $"用户密钥写入失败，本次运行仅使用内存密钥：{keyFile}");
+
+        if (_IsCngDpapiAvailable())
+        {
+            if (!_TryProtect(key, out var storeData))
+                throw new InvalidOperationException("本机 DPAPI 不可用，无法创建用户密钥");
+            _QuarantineBrokenKeyFile(keyFile); // 已确认能重建，才动原文件
+            if (!_WriteKeyFile(keyFile, storeData))
+                LogWrapper.Error("Encryption", $"用户密钥写入失败，本次运行仅使用内存密钥：{keyFile}");
+            else
+                LogWrapper.Warn("Encryption", "用户密钥已重建（version 2）。旧密钥保护的数据无法恢复，需要重新登录。");
+            return key;
+        }
+
+        // 软件降级路径：不依赖系统 DPAPI，保证 Wine / Linux / 精简 Windows 可正常启动与保存登录
+        var softData = EncryptionData.ToBytes(new EncryptionData { Version = SOFTWARE_KEY_VERSION, Data = _SoftwareWrapKey(key) });
+        _QuarantineBrokenKeyFile(keyFile);
+        if (!_WriteKeyFile(keyFile, softData))
+            LogWrapper.Error("Encryption", $"软件用户密钥写入失败，本次运行仅使用内存密钥：{keyFile}");
         else
-            LogWrapper.Warn("Encryption", "用户密钥已重建（version 2）。旧密钥保护的数据无法恢复，需要重新登录。");
+            LogWrapper.Warn("Encryption", $"当前环境无可用 CNG DPAPI，已使用软件方式保存用户密钥：{keyFile}");
         return key;
     }
 
