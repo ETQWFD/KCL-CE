@@ -3,8 +3,8 @@
     {
       "file_name": "KCL-CE-2.15.2-kcl.1-arm64.zip",
       "version": {
-        "name": "2.15.2",
         "channel": "stable",
+        "name": "2.15.2",
         "code": 600
       },
       "upd_time": "2026-10-24 12:02:57",
@@ -13,7 +13,7 @@
       ],
       "patches": [],
       "sha256": "bfa0c642a5e70bd7118c2f6dcc3b9342bce6bf10dec318c926f374b208d0a2ec",
-      "changelog": "KCL CE 2.15.2-kcl.1：修复启动白屏，内置正版登录与下载解锁"
+      "changelog": "KCL CE 2.15.2：修复启动白屏，内置微软正版登录与下载解锁"
     }
   ]
 }

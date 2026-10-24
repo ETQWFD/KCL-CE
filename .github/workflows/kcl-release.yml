@@ -67,6 +67,8 @@ jobs:
         run: |
           $arch="${{ matrix.arch }}".ToLower(); $v="$env:VER"
           New-Item -ItemType Directory -Force -Path dist,stage,update/apiv2/updates | Out-Null
+          # 只保留本架构清单，避免把 checkout 带来的另一架构旧清单一并上传，在 publish 合并时交叉覆盖
+          Remove-Item "update/apiv2/updates/*.json" -ErrorAction SilentlyContinue
           # AssemblyName 已恢复为内部名 “Plain Craft Launcher 2”，发布产物默认即该名；对外重命名为 KCL CE.exe
           $src="artifact/Plain Craft Launcher 2.exe"
           if (-not (Test-Path $src)) { $src=(Get-ChildItem artifact -Filter *.exe | Select-Object -First 1).FullName }
