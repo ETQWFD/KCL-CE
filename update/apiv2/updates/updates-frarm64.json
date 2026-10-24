@@ -3,17 +3,17 @@
     {
       "file_name": "KCL-CE-2.15.3-kcl.1-arm64.zip",
       "version": {
-        "name": "2.15.3",
-        "code": 600,
-        "channel": "stable"
+        "channel": "stable",
+        "code": 610,
+        "name": "2.15.3"
       },
       "upd_time": "2026-10-24 14:42:32",
       "downloads": [
         "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.3-kcl.1/KCL-CE-2.15.3-kcl.1-arm64.zip"
       ],
       "patches": [],
-      "sha256": "dc73e0b48dfbced7b76d1b706e4ec938f153c69bf08e32f30998ac1b0fdfd525",
-      "changelog": "KCL CE 2.15.3-kcl.1：修复启动白屏，内置正版登录与下载解锁"
+      "sha256": "72e2206bc506ffd584ca0d6ba864410b9793f2c3447054a9e20f581b5c48d193",
+      "changelog": "KCL CE 2.15.3-kcl.1：修复 Wine/精简系统点同意后白屏崩溃(CNG缺失自动降级软件密钥)；左上角品牌改 KCL；内置正版登录与下载解锁"
     }
   ]
 }

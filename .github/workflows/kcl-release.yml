@@ -75,16 +75,18 @@ jobs:
           Copy-Item $src "stage/KCL CE.exe" -Force
           Copy-Item "stage/KCL CE.exe" "dist/KCL-CE-$v-$arch.exe" -Force
           Compress-Archive -Path "stage/KCL CE.exe" -DestinationPath "dist/KCL-CE-$v-$arch.zip" -Force
-          $sha=(Get-FileHash "dist/KCL-CE-$v-$arch.exe" -Algorithm SHA256).Hash.ToLower()
+          $sha=(Get-FileHash "dist/KCL-CE-$v-$arch.zip" -Algorithm SHA256).Hash.ToLower()
           $base="https://github.com/ETQWFD/KCL-CE/releases/download/v$v/"
           # 更新清单中的 version.name 必须是“纯数字、比当前内置版本更大”的 SemVer，不能带 -kcl 预发布后缀（否则会被判为更旧而永不更新）
           $semver=($v -split '-')[0]
+          # version.code 取自 metadata.json 并随版本递增；下载物为内含 KCL CE.exe 的 zip，故 sha256 对 zip 计算
+          $metaCode=[int]((Get-Content "Plain Craft Launcher 2/metadata.json" -Raw | ConvertFrom-Json).version.code)
           $channel=[ordered]@{ assets=@([ordered]@{
             file_name="KCL-CE-$v-$arch.zip"
-            version=@{channel="stable";name=$semver;code=600}
+            version=@{channel="stable";name=$semver;code=$metaCode}
             upd_time=(Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
             downloads=@($base+"KCL-CE-$v-$arch.zip")
-            patches=@(); sha256=$sha; changelog="KCL CE $v：修复启动白屏，内置正版登录与下载解锁" }) }
+            patches=@(); sha256=$sha; changelog="KCL CE $v：修复 Wine/精简系统点同意后白屏崩溃；品牌改 KCL；内置正版登录与下载解锁" }) }
           ($channel|ConvertTo-Json -Depth 8)|Out-File -Encoding utf8NoBOM "update/apiv2/updates/updates-sr$arch.json"
           Copy-Item "update/apiv2/updates/updates-sr$arch.json" "update/apiv2/updates/updates-fr$arch.json" -Force
           '{"content":[]}'|Out-File -Encoding utf8NoBOM "update/apiv2/announcement.json"
