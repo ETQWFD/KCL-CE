@@ -9,7 +9,10 @@ public static class Secrets
     /// <summary>
     /// 微软 OAuth 的 Client ID
     /// </summary>
-    public static string MSOAuthClientId { get; } = EnvironmentInterop.GetSecret("MS_CLIENT_ID", readEnvDebugOnly: true).ReplaceNullOrEmpty();
+    public static string MSOAuthClientId { get; } =
+        EnvironmentInterop.GetSecret("MS_CLIENT_ID", readEnvDebugOnly: true).ReplaceNullOrEmpty() is { Length: > 0 } _msId
+            ? _msId
+            : "d903cc0e-c3b4-4a3c-b347-06c2e6269be0";
 
     /// <summary>
     /// CurseForge API 的 Client ID
