@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "file_name": "KCL-CE-2.15.2-kcl.1-arm64.zip",
+      "file_name": "KCL-CE-2.15.3-kcl.1-arm64.zip",
       "version": {
-        "channel": "stable",
-        "name": "2.15.2",
-        "code": 600
+        "name": "2.15.3",
+        "code": 600,
+        "channel": "stable"
       },
-      "upd_time": "2026-10-24 12:02:57",
+      "upd_time": "2026-10-24 14:42:32",
       "downloads": [
-        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.2-kcl.1/KCL-CE-2.15.2-kcl.1-arm64.zip"
+        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.3-kcl.1/KCL-CE-2.15.3-kcl.1-arm64.zip"
       ],
       "patches": [],
-      "sha256": "bfa0c642a5e70bd7118c2f6dcc3b9342bce6bf10dec318c926f374b208d0a2ec",
-      "changelog": "KCL CE 2.15.2：修复启动白屏，内置微软正版登录与下载解锁"
+      "sha256": "dc73e0b48dfbced7b76d1b706e4ec938f153c69bf08e32f30998ac1b0fdfd525",
+      "changelog": "KCL CE 2.15.3-kcl.1：修复启动白屏，内置正版登录与下载解锁"
     }
   ]
 }
