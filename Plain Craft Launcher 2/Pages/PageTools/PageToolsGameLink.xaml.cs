@@ -436,7 +436,7 @@ public partial class PageToolsGameLink
                     }
                     catch (Exception ex)
                     {
-                        LogWrapper.Error(ex, $"[Link] Failed to get announcement from server {serverNumber}");
+                        LogWrapper.Warn(ex, $"[Link] Failed to get announcement from server {serverNumber}");
                         if (!TryApplyCurrentAnnouncementRequest(requestId, () =>
                             {
                                 States.Link.AnnounceCacheConfig.Reset();
@@ -566,11 +566,10 @@ public partial class PageToolsGameLink
                 {
                     if (!IsCurrentAnnouncementRequest(requestId)) return;
                     _announcementLoadState = AnnouncementLoadState.Failed;
-                    HintAnnounce.Visibility = Visibility.Visible;
-                    HintAnnounce.Theme = MyHint.Themes.Red;
-                    HintAnnounce.Text = Lang.Text("Tools.GameLink.Error.ConnectFailed");
+                    // KCL CE 为第三方构建，无上游官方大厅服务器；公告不可用不影响 P2P 编号加入/创建大厅，静默隐藏提示条
+                    HintAnnounce.Visibility = Visibility.Collapsed;
                 });
-                LogWrapper.Error(ex, "[Link] Failed to get lobby announcement");
+                LogWrapper.Warn(ex, "[Link] Failed to get lobby announcement");
             }
         });
     }
