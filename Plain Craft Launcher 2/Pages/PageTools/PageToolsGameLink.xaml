@@ -80,16 +80,7 @@
                         <StackPanel Margin="20,40,18,18">
                             <TextBlock TextWrapping="Wrap" Margin="0,0,0,10"
                                        Text="{DynamicResource Tools.GameLink.Agreement.Description}" />
-                            <local:MyListItem Title="{DynamicResource Tools.GameLink.Agreement.PrivacyPolicy}"
-                                              Info="{DynamicResource Tools.GameLink.Agreement.PrivacyPolicyInfo}"
-                                              Type="Clickable" local:CustomEventService.EventType="OpenUrl"
-                                              local:CustomEventService.EventData="https://www.pclc.cc/privacy/personal-info-brief.html"
-                                              Logo="pack://application:,,,/images/Blocks/Grass.png" />
-                            <local:MyListItem Title="{DynamicResource Tools.GameLink.Agreement.NatayarkTerms}"
-                                              Info="{DynamicResource Tools.GameLink.Agreement.NatayarkTermsInfo}"
-                                              Type="Clickable" local:CustomEventService.EventType="OpenUrl"
-                                              local:CustomEventService.EventData="https://account.naids.com/policy"
-                                              Logo="pack://application:,,,/images/Blocks/Grass.png" />
+                            <!-- KCL CE：移除原 PCL/Natayark 第三方隐私与协议外链（同时避免外部图标资源依赖） -->
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,0"
                                        Text="{DynamicResource Tools.GameLink.Agreement.Body}" />
                             <local:MyButton x:Name="BtnEulaAgree"
