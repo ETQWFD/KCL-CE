@@ -1,7 +1,7 @@
 {
-  "updates-frarm64": "b57eb22de4c3f849278f46d0220af3c9",
-  "updates-frx64": "601f0f5cef0354c16f6807d680c98aca",
-  "updates-srarm64": "b57eb22de4c3f849278f46d0220af3c9",
-  "updates-srx64": "601f0f5cef0354c16f6807d680c98aca",
+  "updates-frarm64": "422e8434acb483bca5b14ae975a706e4",
+  "updates-frx64": "d983130e33c38b35fc212a60eda4890c",
+  "updates-srarm64": "422e8434acb483bca5b14ae975a706e4",
+  "updates-srx64": "d983130e33c38b35fc212a60eda4890c",
   "announcement": "8dba7a82aed67db600a6f582f1786881"
 }
