@@ -126,6 +126,23 @@
                         Text="{DynamicResource Setup.About.SourceCode}" />
                 </Grid>
             </local:MyCard>
+            <local:MyCard Margin="0,0,0,15" Title="联系作者">
+                <StackPanel Margin="21,40,21,22">
+                    <TextBlock
+                        LineHeight="20"
+                        Text="使用问题、Bug 反馈或建议交流，可加入 KCL 官方 QQ 群（群号 1121514619）联系开发者龙腾OS（ETC Team）。"
+                        TextWrapping="Wrap" />
+                    <local:MyButton
+                        Margin="0,15,0,0"
+                        MinWidth="180"
+                        HorizontalAlignment="Left"
+                        ColorType="Highlight"
+                        Padding="13,0"
+                        local:CustomEventService.EventData="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&amp;k=b31JnHKqph3vMmCIhk2htihvcREH2F1t&amp;authKey=U8JJu2GFgtaIvRnov%2FhH7%2Bcq08hv8JM6q5GBdGBzF1yZXYTSGSbQP9O%2FIh%2BVqby9&amp;noverify=0&amp;group_code=1121514619"
+                        local:CustomEventService.EventType="OpenUrl"
+                        Text="加入 QQ 群联系作者" />
+                </StackPanel>
+            </local:MyCard>
             <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Setup.About.SpecialThanks.Title}">
                 <Grid Margin="21,40,21,16">
                     <Grid.RowDefinitions>

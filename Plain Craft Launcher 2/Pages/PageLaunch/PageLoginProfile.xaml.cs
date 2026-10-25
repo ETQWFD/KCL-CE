@@ -47,7 +47,8 @@ public partial class PageLoginProfile
         {
             foreach (var p in ProfileService.Profiles)
                 ProfileCollection.Add(new ProfileItem(p));
-            HintMicrosoft.Visibility = ProfileService.Profiles.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            // KCL CE：离线/第三方登录开箱即用，不再展示“需要先正版验证”的误导提示
+            HintMicrosoft.Visibility = Visibility.Collapsed;
             ModBase.Log("[Profile] 档案列表刷新完成");
         }
         catch (Exception ex)

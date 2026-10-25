@@ -181,11 +181,8 @@ public static class ProfileUi
 
     public static bool CanCreateOtherProfile()
     {
-#if DEBUG || DEBUGCI
+        // KCL CE：离线与第三方（外置认证）登录开箱即用，不强制先进行一次微软正版验证。
         return true;
-#else
-        return ProfileService.HasMicrosoftProfile || (Lang.IsFeaturesUnrestricted && ProfileService.Profiles.Count > 0) || NetworkHelper.IsNetworkAvailable() is false;
-#endif
     }
 
     public static void CreateProfile()
