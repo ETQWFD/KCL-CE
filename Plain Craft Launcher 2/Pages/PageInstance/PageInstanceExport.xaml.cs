@@ -978,18 +978,18 @@ public partial class PageInstanceExport : IRefreshable
             // 复制 PCL 个性化内容
             if (includePCLCustom)
             {
-                if (Directory.Exists(Path.Combine(ModBase.exePath, "PCL", "Pictures")))
-                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "PCL", "Pictures"), Path.Combine(cacheFolder, "PCL", "Pictures"));
-                if (Directory.Exists(Path.Combine(ModBase.exePath, "PCL", "Musics")))
-                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "PCL", "Musics"), Path.Combine(cacheFolder, "PCL", "Musics"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"), Path.Combine(cacheFolder, "PCL", "Custom.xaml"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Setup.ini")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Setup.ini"), Path.Combine(cacheFolder, "PCL", "Setup.ini"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "hints.txt")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "hints.txt"), Path.Combine(cacheFolder, "PCL", "hints.txt"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Logo.png")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Logo.png"), Path.Combine(cacheFolder, "PCL", "Logo.png"));
+                if (Directory.Exists(Path.Combine(ModBase.exePath, "KCL", "Pictures")))
+                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "KCL", "Pictures"), Path.Combine(cacheFolder, "PCL", "Pictures"));
+                if (Directory.Exists(Path.Combine(ModBase.exePath, "KCL", "Musics")))
+                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "KCL", "Musics"), Path.Combine(cacheFolder, "PCL", "Musics"));
+                if (File.Exists(Path.Combine(ModBase.exePath, "KCL", "Custom.xaml")))
+                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "KCL", "Custom.xaml"), Path.Combine(cacheFolder, "PCL", "Custom.xaml"));
+                if (File.Exists(Path.Combine(ModBase.exePath, "KCL", "Setup.ini")))
+                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "KCL", "Setup.ini"), Path.Combine(cacheFolder, "PCL", "Setup.ini"));
+                if (File.Exists(Path.Combine(ModBase.exePath, "KCL", "hints.txt")))
+                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "KCL", "hints.txt"), Path.Combine(cacheFolder, "PCL", "hints.txt"));
+                if (File.Exists(Path.Combine(ModBase.exePath, "KCL", "Logo.png")))
+                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "KCL", "Logo.png"), Path.Combine(cacheFolder, "PCL", "Logo.png"));
             }
         })
         {

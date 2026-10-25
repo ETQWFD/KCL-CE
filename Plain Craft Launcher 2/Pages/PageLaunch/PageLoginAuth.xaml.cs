@@ -50,11 +50,14 @@ public partial class PageLoginAuth
         BtnWebsite.Click += BtnWebsite_Click;
         BtnPasswordWebsite.Click += BtnWebsite_Click;
         BtnLink.Click += Btn_Click;
+        // 自定义认证服务器地址（authlib-injector / Yggdrasil），用户可填写任意第三方登录服务器
+        TextAuthServer.TextChanged += (_, _) => _authServerUrl = TextAuthServer.Text?.Trim() ?? "";
     }
 
     private void Reload()
     {
-        _authServerUrl = draggedAuthServer ?? "";
+        _authServerUrl = string.IsNullOrWhiteSpace(draggedAuthServer) ? DefaultAuthServer : draggedAuthServer;
+        TextAuthServer.Text = _authServerUrl;
         var knownOAuthSupport = draggedAuthServerOAuthSupported;
         draggedAuthServer = null;
         draggedAuthServerOAuthSupported = null;
@@ -212,10 +215,10 @@ public partial class PageLoginAuth
 
         var oldElements = wasOAuth
             ? new FrameworkElement[] { PanOAuth, BtnUsePassword, BtnWebsite, BtnBackOAuth }
-            : new FrameworkElement[] { TextName, TextNameTitle, TextPass, TextPassTitle, BtnLink, BtnLogin, PanPasswordLinks, BtnBack };
+            : new FrameworkElement[] { TextName, TextNameTitle, TextPass, TextPassTitle, TextAuthServer, TextAuthServerTitle, BtnLink, BtnLogin, PanPasswordLinks, BtnBack };
         var newElements = useOAuth
             ? new FrameworkElement[] { PanOAuth, BtnUsePassword, BtnWebsite, BtnBackOAuth }
-            : new FrameworkElement[] { TextName, TextNameTitle, TextPass, TextPassTitle, BtnLink, BtnLogin, PanPasswordLinks, BtnBack };
+            : new FrameworkElement[] { TextName, TextNameTitle, TextPass, TextPassTitle, TextAuthServer, TextAuthServerTitle, BtnLink, BtnLogin, PanPasswordLinks, BtnBack };
 
         var animations = new List<ModAnimation.AniData>();
         if (wasOAuth || !_loginModeInitialized)

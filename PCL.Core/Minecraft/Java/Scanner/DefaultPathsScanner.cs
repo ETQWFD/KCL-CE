@@ -37,7 +37,7 @@ public class DefaultPathsScanner : IJavaScanner
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "runtime"),
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            Path.Combine(Basics.ExecutableDirectory, "PCL")
+            Path.Combine(Basics.ExecutableDirectory, "KCL")
         };
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

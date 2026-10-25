@@ -416,7 +416,7 @@ namespace PCL
 
             // 确认路径
             relativeUrl = relativeUrl.Replace('/', Path.DirectorySeparatorChar);
-            var pclDir = Path.Combine(Basics.ExecutableDirectory, "PCL");
+            var pclDir = Path.Combine(Basics.ExecutableDirectory, "KCL");
 
             if (Path.IsPathFullyQualified(relativeUrl)) // 绝对路径
             {

@@ -50,7 +50,7 @@ public partial class PageToolsTest
         TextDownloadFolder.Validate();
 
         if (!string.IsNullOrEmpty(TextDownloadFolder.ValidateResult) || string.IsNullOrEmpty(TextDownloadFolder.Text))
-            TextDownloadFolder.Text = ModBase.exePath + @"PCL\MyDownload\";
+            TextDownloadFolder.Text = ModBase.exePath + @"KCL\MyDownload\";
 
         TextDownloadFolder.Validate();
         TextDownloadName.Validate();
@@ -262,7 +262,8 @@ public partial class PageToolsTest
                     }
 
                     num += ModBase.DeleteDirectory(ModBase.pathTemp, true);
-                    num += ModBase.DeleteDirectory(Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL"), true);
+                    num += ModBase.DeleteDirectory(Path.Combine(SystemPaths.DriveLetter, "ProgramData", "KCL"), true);
+                    num += ModBase.DeleteDirectory(Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL"), true); //清理旧版本遗留
                     if (num != 0)
                     {
                         ModMain.MyMsgBox(Lang.Text("Tools.Test.Clean.ClearedMessage", num),

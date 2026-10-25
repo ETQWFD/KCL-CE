@@ -68,6 +68,8 @@
     </Grid>
     <local:MyTextBox Grid.Row="4" Grid.Column="1" Height="28" x:Name="TextName" />
     <TextBlock x:Name="TextNameTitle" Text="{DynamicResource Launch.Account.Auth.Email}" Grid.Row="4" VerticalAlignment="Center" />
+    <local:MyTextBox Grid.Row="2" Grid.Column="1" Height="28" x:Name="TextAuthServer" Visibility="Collapsed" />
+    <TextBlock x:Name="TextAuthServerTitle" Text="认证服务器地址（Yggdrasil / authlib-injector）" Grid.Row="2" VerticalAlignment="Center" Visibility="Collapsed" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
     <PasswordBox Grid.Row="6" Grid.Column="1" x:Name="TextPass" />
     <TextBlock x:Name="TextPassTitle" Text="{DynamicResource Launch.Account.Auth.Password}" Grid.Row="6" VerticalAlignment="Center" />
     <local:MyTextButton Margin="0,12,2,0" x:Name="BtnLink" Content="{DynamicResource Launch.Account.Auth.Register}"

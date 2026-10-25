@@ -71,7 +71,9 @@ public static class Paths
         const string oldName = ".PCLCE";
 #endif
         // fill paths
-        _data = Path.Combine(DefaultDirectory, "PCL");
+        // 启动器自身的 per-instance 数据目录（exe 同级）：KCL，不再生成 PCL 文件夹。
+        // 注意：游戏实例/整合包目录内的 PCL\Setup.ini 等是游戏侧约定，不在此路径下，保持不变。
+        _data = Path.Combine(DefaultDirectory, "KCL");
         _sharedData = GetSpecialPath(Special.ApplicationData, name);
         _sharedLocalData = GetSpecialPath(Special.LocalApplicationData, name);
         _temp = Path.Combine(Path.GetTempPath(), name);

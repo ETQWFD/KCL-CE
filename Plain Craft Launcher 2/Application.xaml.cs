@@ -56,8 +56,8 @@ public partial class Application
                     }
 
             // 初始化文件结构
-            Directory.CreateDirectory(ModBase.exePath + @"PCL\Pictures");
-            Directory.CreateDirectory(ModBase.exePath + @"PCL\Musics");
+            Directory.CreateDirectory(ModBase.exePath + @"KCL\Pictures");
+            Directory.CreateDirectory(ModBase.exePath + @"KCL\Musics");
             Directory.CreateDirectory(Path.Combine(ModBase.pathTemp, "Cache"));
             Directory.CreateDirectory(Path.Combine(ModBase.pathTemp, "Download"));
             Directory.CreateDirectory(ModBase.pathAppdata);
@@ -70,7 +70,7 @@ public partial class Application
             // 设置初始窗口
             if (Config.Preference.ShowStartupLogo)
             {
-                ModMain.frmStart = new SplashScreen(@"Images\icon.ico");
+                ModMain.frmStart = new SplashScreen(@"Images\splash.png");
                 ModMain.frmStart.Show(false, true);
             }
 
@@ -92,7 +92,7 @@ public partial class Application
             // 删除旧日志
             for (var i = 1; i <= 5; i++)
             {
-                var oldLogFile = $@"{ModBase.exePath}PCL\Log-CE{i}.log";
+                var oldLogFile = $@"{ModBase.exePath}KCL\Log-CE{i}.log";
                 if (File.Exists(oldLogFile))
                     File.Delete(oldLogFile);
             }

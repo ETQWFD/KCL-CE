@@ -37,7 +37,8 @@ public enum ColorTheme
     SkyBlue = 0,
     CatBlue = 1,
     DeathBlue = 2,
-    HmclBlue = 3
+    KclGreen = 3,
+    HmclBlue = 4
 }
 
 /// <summary>

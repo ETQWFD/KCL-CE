@@ -550,7 +550,7 @@ public class ModSetup
 
                 try
                 {
-                    ModMain.frmMain.ImageTitleLogo.Source = ModBase.exePath + @"PCL\Logo.png";
+                    ModMain.frmMain.ImageTitleLogo.Source = ModBase.exePath + @"KCL\Logo.png";
                 }
                 catch (Exception ex)
                 {

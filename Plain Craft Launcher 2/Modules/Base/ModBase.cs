@@ -638,7 +638,7 @@ public static class ModBase
     public static void IniClearCache(string fileName)
     {
         if (!fileName.Contains(@":\"))
-            fileName = $@"{exePath}PCL\{fileName}.ini";
+            fileName = $@"{exePath}KCL\{fileName}.ini";
         if (iniCache.ContainsKey(fileName))
             iniCache.Remove(fileName, out _);
     }
@@ -654,7 +654,7 @@ public static class ModBase
         {
             // 还原文件路径
             if (!fileName.Contains(@":\"))
-                fileName = $@"{exePath}PCL\{fileName}.ini";
+                fileName = $@"{exePath}KCL\{fileName}.ini";
             // 检索缓存
             if (iniCache.ContainsKey(fileName))
                 return iniCache[fileName];
@@ -760,7 +760,7 @@ public static class ModBase
                 }
 
                 if (!fileName.Contains(@":\"))
-                    fileName = $@"{exePath}PCL\{fileName}.ini";
+                    fileName = $@"{exePath}KCL\{fileName}.ini";
                 WriteFile(fileName, fileContent.ToString());
             }
         }
@@ -2384,7 +2384,7 @@ public static class ModBase
 
     private static string GetPureASCIIDir()
     {
-        if (exePath.IsASCII()) return exePath + @"PCL\";
+        if (exePath.IsASCII()) return exePath + @"KCL\";
 
         if (pathAppdata.IsASCII()) return pathAppdata;
 
@@ -3559,7 +3559,7 @@ public static class ModBase
                                  Lang.Text("Setup.Feedback.Reminder.Title"),
                                  Lang.Text("Common.Action.OpenFolder"),
                                  Lang.Text("Setup.Feedback.Reminder.NotNeeded")) ==
-                             1)) OpenExplorer(exePath + @"PCL\Log\");
+                             1)) OpenExplorer(exePath + @"KCL\Log\");
         OpenWebsite("https://github.com/PCL-Community/PCL2-CE/issues/");
     }
 

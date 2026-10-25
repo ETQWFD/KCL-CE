@@ -47,7 +47,7 @@ public partial class FormMain
                 changelog = Lang.Text("Main.UpdateLog.Empty");
             if (ModMain.MyMsgBoxMarkdown(changelog,
                     Lang.Text("Main.UpdateLog.Title", ModBase.versionBranchName, ModBase.versionBaseName), Lang.Text("Common.Action.Confirm"), Lang.Text("Main.UpdateLog.FullChangelog")) ==
-                2) ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases");
+                2) ModBase.OpenWebsite("https://github.com/ETQWFD/KCL-CE/releases");
         }, "UpdateLog Output");
     }
 
@@ -241,7 +241,7 @@ public partial class FormMain
                         $"{hint}{"\r\n"}{"\r\n"}{Lang.Text("Main.SpecialVersion.HideHintNotice")}",
                         Lang.Text("Main.SpecialVersion.Title"), Lang.Text("Main.SpecialVersion.IUnderstand"), Lang.Text("Main.SpecialVersion.OpenDownloadPageAndExit"), isWarn: true, button2Action: () =>
                         {
-                            ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases/latest");
+                            ModBase.OpenWebsite("https://github.com/ETQWFD/KCL-CE/releases/latest");
                             EndProgram(false);
                         });
                 }
@@ -1029,11 +1029,11 @@ public partial class FormMain
             if (extension == "xaml")
             {
                 ModBase.Log("[System] 文件后缀为 XAML，作为主页加载");
-                if (File.Exists(ModBase.exePath + @"PCL\Custom.xaml"))
+                if (File.Exists(ModBase.exePath + @"KCL\Custom.xaml"))
                     if (ModMain.MyMsgBox(Lang.Text("Main.FileDrag.HomepageExists"), Lang.Text("Main.FileDrag.OverwriteTitle"), Lang.Text("Common.Action.Overwrite"), Lang.Text("Common.Action.Cancel")) == 2)
                         return;
 
-                ModBase.CopyFile(filePath, ModBase.exePath + @"PCL\Custom.xaml");
+                ModBase.CopyFile(filePath, ModBase.exePath + @"KCL\Custom.xaml");
                 ModBase.RunInUi(() =>
                 {
                     Config.Preference.Homepage.Type = 1;

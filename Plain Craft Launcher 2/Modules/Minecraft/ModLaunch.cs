@@ -2198,7 +2198,7 @@ public static class ModLaunch
         result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "bin", "natives");
         if (result.IsASCII())
             return result;
-        return Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL", "natives");
+        return Path.Combine(SystemPaths.DriveLetter, "ProgramData", "KCL", "natives");
     }
 
     #endregion
@@ -2480,7 +2480,7 @@ public static class ModLaunch
                 customCommandGlobal + "\r\n" + customCommandVersion + "\r\n" +
                 $"\"{mcLaunchJavaSelected.Installation.JavaExePath}\" {mcLaunchArgument}" + "\r\n" +
                 "echo 游戏已退出。" + "\r\n" + "pause";
-            ModBase.WriteFile(currentLaunchOptions.SaveBatch ?? ModBase.exePath + @"PCL\LatestLaunch.bat",
+            ModBase.WriteFile(currentLaunchOptions.SaveBatch ?? ModBase.exePath + @"KCL\LatestLaunch.bat",
                 McLogFilter.FilterAccessToken(cmdString, 'F'),
                 encoding: mcLaunchJavaSelected.Installation.MajorVersion > 8 ? Encoding.UTF8 : Encoding.Default);
             if (currentLaunchOptions.SaveBatch is not null)

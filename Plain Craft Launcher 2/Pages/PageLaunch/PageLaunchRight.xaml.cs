@@ -101,7 +101,7 @@ public partial class PageLaunchRight : IRefreshable
         {
             // 本地文件
             LogWrapper.Info("[Page] 主页自定义数据来源：本地文件");
-            content = ModBase.ReadFile(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"));
+            content = ModBase.ReadFile(Path.Combine(ModBase.exePath, "KCL", "Custom.xaml"));
         }
         else if (uiCustomType == 2)
         {
@@ -283,7 +283,7 @@ public partial class PageLaunchRight : IRefreshable
         string[]? lines = null;
 
         // 外部文件
-        var externalPath = Path.Combine(ModBase.exePath, "PCL", "hints.txt");
+        var externalPath = Path.Combine(ModBase.exePath, "KCL", "hints.txt");
         if (File.Exists(externalPath))
         {
             try
@@ -680,7 +680,7 @@ public partial class PageLaunchRight : IRefreshable
 
     private static string _GetHomepageLiveDirectory()
     {
-        return Path.Combine(ModBase.exePath, "PCL");
+        return Path.Combine(ModBase.exePath, "KCL");
     }
 
     private static void _WriteHomepageLiveSupportMarker(string directory)

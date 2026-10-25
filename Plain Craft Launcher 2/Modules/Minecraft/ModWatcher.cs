@@ -724,7 +724,7 @@ public static class ModWatcher
                             [
                                 version.PathInstance + version.Name + ".json",
                                 LogWrapper.CurrentLogger.CurrentLogFiles.Last(),
-                                ModBase.exePath + @"PCL\LatestLaunch.bat"
+                                ModBase.exePath + @"KCL\LatestLaunch.bat"
                             ]);
                     }
                     catch (Exception ex)
