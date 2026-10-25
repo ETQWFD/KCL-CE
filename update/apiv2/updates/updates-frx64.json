@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "file_name": "KCL-CE-2.15.3-kcl.1-x64.zip",
+      "file_name": "KCL-CE-2.15.4-kcl.1-x64.zip",
       "version": {
         "channel": "stable",
-        "code": 610,
-        "name": "2.15.3"
+        "name": "2.15.4",
+        "code": 611
       },
-      "upd_time": "2026-10-24 14:41:28",
+      "upd_time": "2026-10-25 02:11:52",
       "downloads": [
-        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.3-kcl.1/KCL-CE-2.15.3-kcl.1-x64.zip"
+        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.4-kcl.1/KCL-CE-2.15.4-kcl.1-x64.zip"
       ],
       "patches": [],
-      "sha256": "5bd06897f51d2955cb50f946bab9937003c3f04bb8f3d958b22b87f18c1f2136",
-      "changelog": "KCL CE 2.15.3-kcl.1：修复 Wine/精简系统点同意后白屏崩溃(CNG缺失自动降级软件密钥)；左上角品牌改 KCL；内置正版登录与下载解锁"
+      "sha256": "c7b547478df76fff7b8ed96edce450288c0d4b0017924a9526db2c09c014e965",
+      "changelog": "KCL CE 2.15.4-kcl.1：修复 Wine/精简系统点同意后白屏崩溃；品牌改 KCL；内置正版登录与下载解锁"
     }
   ]
 }
