@@ -12,10 +12,12 @@ namespace PCL.Core.Link.Lobby;
 
 public static class LobbyInfoProvider
 {
-    public static bool IsLobbyAvailable { get; set; } = false;
-    public static bool AllowCustomName { get; set; } = false;
-    public static bool RequiresLogin { get; set; } = true;
-    public static bool RequiresRealName { get; set; } = true;
+    // KCL CE 为第三方构建，无上游官方大厅服务器密钥；本地 EasyTier P2P 编号大厅默认可用，
+    // 不依赖官方公告/账户，故默认可用、免登录、免实名、允许自定义用户名。
+    public static bool IsLobbyAvailable { get; set; } = true;
+    public static bool AllowCustomName { get; set; } = true;
+    public static bool RequiresLogin { get; set; } = false;
+    public static bool RequiresRealName { get; set; } = false;
     public static int ProtocolVersion { get; set; } = 6;
 
     public static BroadcastLocal? McBroadcast { get; internal set; }

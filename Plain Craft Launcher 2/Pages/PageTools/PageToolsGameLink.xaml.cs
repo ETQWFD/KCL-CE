@@ -452,10 +452,9 @@ public partial class PageToolsGameLink
 
                 #region 解析基础状态与版本限制
 
-                LobbyInfoProvider.IsLobbyAvailable = (bool)jObj["available"];
-                LobbyInfoProvider.AllowCustomName = (bool)jObj["allowCustomName"];
-                LobbyInfoProvider.RequiresLogin = (bool)jObj["requireLogin"];
-                LobbyInfoProvider.RequiresRealName = (bool)jObj["requireRealname"];
+                // KCL CE：本地 EasyTier P2P 大厅不依赖上游官方公告服务器，
+                // 不读取官方返回的 available/登录/实名开关，避免第三方无密钥时把本地大厅锁死。
+                // LobbyInfoProvider 的默认可用/免登录状态在此保持不变。
 
                 if (jObj["version"].ToObject<double>() > LobbyInfoProvider.ProtocolVersion)
                 {
@@ -466,7 +465,7 @@ public partial class PageToolsGameLink
                         HintAnnounce.Visibility = Visibility.Visible;
                         HintAnnounce.Theme = MyHint.Themes.Red;
                         HintAnnounce.Text = Lang.Text("Tools.GameLink.Error.UpdateRequired");
-                        LobbyInfoProvider.IsLobbyAvailable = false;
+                        // 版本过旧仅提示升级，不锁死本地 P2P 大厅
                     });
                     return;
                 }
@@ -561,7 +560,7 @@ public partial class PageToolsGameLink
             catch (Exception ex)
             {
                 if (!IsCurrentAnnouncementRequest(requestId)) return;
-                LobbyInfoProvider.IsLobbyAvailable = false;
+                // 本地 P2P 大厅不依赖公告服务器，拉取失败不置为不可用
                 ModBase.RunInUi(() =>
                 {
                     if (!IsCurrentAnnouncementRequest(requestId)) return;

@@ -12,6 +12,7 @@ using PCL.Core.Link.Natayark;
 using PCL.Core.Logging;
 using PCL.Core.UI;
 using PCL.Core.Utils.OS;
+using PCL.Core.Utils.Secret;
 using PCL.Network;
 using PCL.Network.Loaders;
 
@@ -86,8 +87,11 @@ public static class ModLink
 
         if (string.IsNullOrWhiteSpace(Config.Link.Username) && string.IsNullOrWhiteSpace(NatayarkProfileManager.NaidProfile.Username))
         {
-            HintService.Hint(Lang.Text("Link.Mod.UsernameOrLogin"), HintType.Error);
-            return false;
+            // KCL CE 本地 P2P 大厅免登录：未设昵称也未登录时，自动生成稳定本地昵称，避免开箱即被拦截
+            var id = Identify.LauncherId ?? "";
+            Config.Link.Username = "KCL-" + (id.Length >= 6
+                ? id[^6..]
+                : (string.IsNullOrEmpty(id) ? new Random().Next(100000, 999999).ToString() : id));
         }
 
         if (ETController.Precheck() == 1)

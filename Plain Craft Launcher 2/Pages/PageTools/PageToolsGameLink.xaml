@@ -186,32 +186,11 @@
                 </StackPanel>
                 <local:MyCard x:Name="PanFooter" Grid.Row="2" Margin="10">
                     <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" Opacity="0.75" Margin="8">
+                        <!-- KCL CE：移除第三方“违法违规举报 / Natayark 协议与隐私 / 友情链接”等入口，仅保留停用大厅功能 -->
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="15,6"
                                     Orientation="Horizontal">
-                            <local:MyTextButton Text="{DynamicResource Tools.GameLink.Link.Report}"
-                                                local:CustomEventService.EventType="OpenUrl"
-                                                local:CustomEventService.EventData="https://qm.qq.com/q/zfml1KaPWS" />
-                            <TextBlock Text=" | " />
-                            <local:MyTextButton Text="{DynamicResource Tools.GameLink.Link.Terms}"
-                                                local:CustomEventService.EventType="OpenUrl"
-                                                local:CustomEventService.EventData="https://account.naids.com/policy" />
-                            <TextBlock Text=" | " />
-                            <local:MyTextButton Text="{DynamicResource Tools.GameLink.Link.Privacy}"
-                                                local:CustomEventService.EventType="OpenUrl"
-                                                local:CustomEventService.EventData="https://www.pclc.cc/privacy/personal-info-brief.html" />
-                            <TextBlock Text=" | " />
                             <local:MyTextButton Text="{DynamicResource Tools.GameLink.Link.Disable}"
                                                 x:Name="BtnEulaStop" Click="BtnEulaStop_Click" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="15,6"
-                                    Orientation="Horizontal">
-                            <TextBlock Text="{DynamicResource Tools.GameLink.Link.Friends}" />
-                            <local:MyTextButton Text="{DynamicResource Tools.GameLink.Link.EasyTier}"
-                                                local:CustomEventService.EventType="OpenUrl"
-                                                local:CustomEventService.EventData="https://easytier.cn/" />
-                            <TextBlock Text=" | " />
-                            <local:MyTextButton Text="Pysio's Home" local:CustomEventService.EventType="OpenUrl"
-                                                local:CustomEventService.EventData="https://pysio.online/" />
                         </StackPanel>
                     </StackPanel>
                 </local:MyCard>

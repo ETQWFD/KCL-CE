@@ -29,8 +29,8 @@
         <Description>KCL CE - 基于 PCL 社区版的第三方修改版 (修改维护: ETC Team / 龙腾OS; 原作: 龙腾猫跃, PCL Community)</Description>
         <Product>KCL CE</Product>
         <Copyright>Copyright © 2026 ETC Team / 龙腾OS; 基于 PCL CE, Copyright © PCL Community &amp; 龙腾猫跃</Copyright>
-        <AssemblyVersion>2.15.6.0</AssemblyVersion>
-        <FileVersion>2.15.6.0</FileVersion>
+        <AssemblyVersion>2.15.7.0</AssemblyVersion>
+        <FileVersion>2.15.7.0</FileVersion>
         <NoWarn>
             41999;42016;42017;42018;42019;42020;42021;42022;42032;42036;42314;
             VSTHRD002;VSTHRD003;VSTHRD110;VSTHRD200
