@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "file_name": "KCL-CE-2.15.9-kcl.1-arm64.zip",
+      "file_name": "KCL-CE-2.15.10-kcl.1-arm64.zip",
       "version": {
-        "name": "2.15.9",
         "code": 616,
+        "name": "2.15.10",
         "channel": "stable"
       },
-      "upd_time": "2026-10-25 10:51:46",
+      "upd_time": "2026-10-26 21:52:29",
       "downloads": [
-        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.9-kcl.1/KCL-CE-2.15.9-kcl.1-arm64.zip"
+        "https://github.com/ETQWFD/KCL-CE/releases/download/v2.15.10-kcl.1/KCL-CE-2.15.10-kcl.1-arm64.zip"
       ],
       "patches": [],
-      "sha256": "8c9c35d6d66e4bc8272c178859de3a20e131bda6af497eb2d651871731255053",
-      "changelog": "KCL CE 2.15.9-kcl.1：修复 Wine/精简系统点同意后白屏崩溃；品牌改 KCL；内置正版登录与下载解锁"
+      "sha256": "d21db8227f6ce87c3541d0b7ca8145992ecb5bd44a455012a583f71e77e378e6",
+      "changelog": "KCL CE 2.15.10-kcl.1：修复 Wine/精简系统点同意后白屏崩溃；品牌改 KCL；内置正版登录与下载解锁"
     }
   ]
 }
