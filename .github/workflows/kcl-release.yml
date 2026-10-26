@@ -89,7 +89,8 @@ jobs:
             patches=@(); sha256=$sha; changelog="KCL CE $v：修复 Wine/精简系统点同意后白屏崩溃；品牌改 KCL；内置正版登录与下载解锁" }) }
           ($channel|ConvertTo-Json -Depth 8)|Out-File -Encoding utf8NoBOM "update/apiv2/updates/updates-sr$arch.json"
           Copy-Item "update/apiv2/updates/updates-sr$arch.json" "update/apiv2/updates/updates-fr$arch.json" -Force
-          '{"content":[]}'|Out-File -Encoding utf8NoBOM "update/apiv2/announcement.json"
+          # 保留 main 上当前正在下发的公告，绝不在发版时清空（仅当仓库里缺失该文件时才初始化空数组）
+          if (-not (Test-Path "update/apiv2/announcement.json")) { '{"content":[]}'|Out-File -Encoding utf8NoBOM "update/apiv2/announcement.json" }
           # cache.json：键=清单名，值=该文件 MD5
           $cache=@{}
           Get-ChildItem update/apiv2/updates/*.json | ForEach-Object {
