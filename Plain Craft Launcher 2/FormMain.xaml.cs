@@ -47,7 +47,7 @@ public partial class FormMain
                 changelog = Lang.Text("Main.UpdateLog.Empty");
             if (ModMain.MyMsgBoxMarkdown(changelog,
                     Lang.Text("Main.UpdateLog.Title", ModBase.versionBranchName, ModBase.versionBaseName), Lang.Text("Common.Action.Confirm"), Lang.Text("Main.UpdateLog.FullChangelog")) ==
-                2) ModBase.OpenWebsite("https://github.com/ETQWFD/KCL-CE/releases");
+                2) ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases");
         }, "UpdateLog Output");
     }
 
@@ -202,7 +202,7 @@ public partial class FormMain
         ModAnimation.AniStart(new[]
         {
             ModAnimation.AaCode(() => ModAnimation.AniEndControl(), 50),
-            ModAnimation.AaOpacity(this, Config.Preference.Theme.WindowOpacity / 1000d + 0.4d, 250, 100),
+            ModAnimation.AaOpacity(this, Config.Preference.Theme.WindowOpacity / 1000d + 0.4d - Opacity, 250, 100),
             ModAnimation.AaDouble(i => TransformPos.Y += (double)i, -TransformPos.Y, 600,
                 100, new ModAnimation.AniEaseOutBack(ModAnimation.AniEasePower.Weak)),
             ModAnimation.AaDouble(i => TransformRotate.Angle += (double)i,
@@ -241,7 +241,7 @@ public partial class FormMain
                         $"{hint}{"\r\n"}{"\r\n"}{Lang.Text("Main.SpecialVersion.HideHintNotice")}",
                         Lang.Text("Main.SpecialVersion.Title"), Lang.Text("Main.SpecialVersion.IUnderstand"), Lang.Text("Main.SpecialVersion.OpenDownloadPageAndExit"), isWarn: true, button2Action: () =>
                         {
-                            ModBase.OpenWebsite("https://github.com/ETQWFD/KCL-CE/releases/latest");
+                            ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases/latest");
                             EndProgram(false);
                         });
                 }
@@ -425,10 +425,10 @@ public partial class FormMain
         var h = windowBounds.Height;
 
         // 判定是否命中偏移后的热区
-        var inLeft = relX >= offsetPxX && relX <= offsetPxX + hitWidthPxX;
-        var inRight = relX <= w - offsetPxX && relX >= w - offsetPxX - hitWidthPxX;
-        var inTop = relY >= offsetPxY && relY <= offsetPxY + hitWidthPxY;
-        var inBottom = relY <= h - offsetPxY && relY >= h - offsetPxY - hitWidthPxY;
+        var inLeft = relX >= offsetPxX && relX <= offsetPxX + hitWidthPxX             && (relY >= offsetPxY && relY <= h - offsetPxY);
+        var inRight = relX <= w - offsetPxX && relX >= w - offsetPxX - hitWidthPxX    && (relY >= offsetPxY && relY <= h - offsetPxY);
+        var inTop = relY >= offsetPxY && relY <= offsetPxY + hitWidthPxY              && (relX >= offsetPxX && relX <= w - offsetPxX);
+        var inBottom = relY <= h - offsetPxY && relY >= h - offsetPxY - hitWidthPxY   && (relX >= offsetPxX && relX <= w - offsetPxX);
 
         handled = true; // 接管该区域的消息
 
@@ -1029,11 +1029,11 @@ public partial class FormMain
             if (extension == "xaml")
             {
                 ModBase.Log("[System] 文件后缀为 XAML，作为主页加载");
-                if (File.Exists(ModBase.exePath + @"KCL\Custom.xaml"))
+                if (File.Exists(ModBase.exePath + @"PCL\Custom.xaml"))
                     if (ModMain.MyMsgBox(Lang.Text("Main.FileDrag.HomepageExists"), Lang.Text("Main.FileDrag.OverwriteTitle"), Lang.Text("Common.Action.Overwrite"), Lang.Text("Common.Action.Cancel")) == 2)
                         return;
 
-                ModBase.CopyFile(filePath, ModBase.exePath + @"KCL\Custom.xaml");
+                ModBase.CopyFile(filePath, ModBase.exePath + @"PCL\Custom.xaml");
                 ModBase.RunInUi(() =>
                 {
                     Config.Preference.Homepage.Type = 1;

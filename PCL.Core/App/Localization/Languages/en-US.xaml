@@ -1438,6 +1438,7 @@
     <sys:String x:Key="Instance.Setup.Advanced.Classpath.ToolTip">Content will be added as Classpath entries at the head of this instance's launch arguments.&#xA;Absolute paths are required. Separate multiple entries with English semicolons (;).</sys:String>
     <sys:String x:Key="Instance.Setup.Advanced.DisableFileVerification">Disable file verification</sys:String>
     <sys:String x:Key="Instance.Setup.Advanced.DisableFileVerification.ToolTip">Do not modify Assets at all; do not verify Libraries, third-party login libraries, or the instance main Jar file for modifications.&#xA;Do not enable this unless you have modified related files.</sys:String>
+    <sys:String x:Key="Instance.Setup.Advanced.DisableModUpdate">Disable mod update</sys:String>
     <sys:String x:Key="Instance.Setup.Advanced.GameArgs.ToolTip">Content in this text box will be appended directly to the end of the launch arguments.&#xA;For example, entering --demo will launch the game in demo mode.&#xA;Supports substitution tokens from the Minecraft instance JSON, e.g. ${library_directory}.&#xA;&#xA;Leave empty to follow the global setting.</sys:String>
     <sys:String x:Key="Instance.Setup.Advanced.IgnoreJavaCompatibility">Ignore Java compatibility warning</sys:String>
     <sys:String x:Key="Instance.Setup.Advanced.IgnoreJavaCompatibility.ToolTip">If a manually selected Java is incompatible with this instance, automatically skip the compatibility warning popup and force the use of the manually selected Java.</sys:String>
@@ -3013,6 +3014,7 @@
     <sys:String x:Key="Setup.Misc.System.StopUsingPclCe.Message.Final">This is the final warning! Are you sure you want to continue?&#xA;All KCL CE data on this computer will be lost forever! (A long time!)</sys:String>
     <sys:String x:Key="Setup.Misc.System.StopUsingPclCe.Title">Stop using KCL CE?</sys:String>
     <sys:String x:Key="Setup.Misc.System.Telemetry">Enable telemetry data collection</sys:String>
+    <sys:String x:Key="Setup.Misc.System.Telemetry.Unavailable">This version has been modified or is an unofficial build, so Sentry reporting is unavailable</sys:String>
     <sys:String x:Key="Setup.Misc.System.Telemetry.ToolTip">When enabled, the launcher will collect and report errors and device environment information. This helps developers fix potential issues and better plan and develop the launcher.&#xA;The following information will be collected: launcher errors, launcher version information and identifier, Windows system version and architecture, installed physical memory size, NAT and IPv6 support status, and whether original PCL, HMCL, or BakaXL have been used.&#xA;&#xA;This data is not associated with you, and we will never sell it to any third party. Not enabling this will not affect other features, but may affect developers' ability to fix potential bugs.&#xA;&#xA;This change will take effect after restarting the launcher.</sys:String>
     <sys:String x:Key="Setup.Misc.System.Title">System</sys:String>
 
