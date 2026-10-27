@@ -204,14 +204,9 @@ public static class ProfileUi
         };
         if (type == ModLaunch.McLoginType.Auth)
         {
-            string? server = null;
-            ModBase.RunInUiWait(() => server = ModMain.MyMsgBoxAuthServer(
-                PageLoginAuth.DefaultAuthServer, PageLoginAuth.PredefinedAuthServers));
-            if (string.IsNullOrWhiteSpace(server))
-            {
-                ProfileService.IsCreatingProfile = false;
-                return;
-            }
+            // KCL CE：第三方（外置）登录直接预填默认认证服务器（LittleSkin / Yggdrasil），
+            // 进入登录页后用户只需填写用户名（衣柜角色名）与密码；认证服务器地址栏在该页仍可手动修改。
+            string server = PageLoginAuth.DefaultAuthServer;
             PageLoginAuth.draggedAuthServerOAuthSupported =
                 PageLoginAuth.IsOAuthSupportedAsync(server).GetAwaiter().GetResult();
             PageLoginAuth.draggedAuthServer = server;
